@@ -1,12 +1,24 @@
-import { Link } from "@tanstack/react-router";
-import { Heart, ShoppingBag, Search, User, Plus } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Heart, ShoppingBag, Search, User, Plus, LogOut, Store } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useFavorites } from "@/lib/store/favorites";
+import { useAuth } from "@/lib/auth/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
   const { count } = useCart();
   const { count: favCount } = useFavorites();
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
@@ -30,7 +42,7 @@ export function Navbar() {
 
         <nav className="flex items-center gap-1">
           <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
-            <Link to="/">
+            <Link to={user ? "/sell" : "/auth"}>
               <Plus size={16} /> Sell
             </Link>
           </Button>
@@ -42,9 +54,41 @@ export function Navbar() {
             <ShoppingBag size={18} />
             {count > 0 && <Badge>{count}</Badge>}
           </Link>
-          <Link to="/" aria-label="Account" className="grid h-10 w-10 place-items-center rounded-full hover:bg-muted">
-            <User size={18} />
-          </Link>
+
+          {loading ? (
+            <div className="h-10 w-10" />
+          ) : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger aria-label="Account" className="grid h-10 w-10 place-items-center rounded-full hover:bg-muted">
+                <User size={18} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="truncate text-xs font-normal text-muted-foreground">
+                  {user.email}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/account"><User size={14} className="mr-2" /> Account</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/sell"><Store size={14} className="mr-2" /> Your store</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onSelect={async () => {
+                    await supabase.auth.signOut();
+                    navigate({ to: "/" });
+                  }}
+                >
+                  <LogOut size={14} className="mr-2" /> Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button asChild size="sm" variant="default">
+              <Link to="/auth">Sign in</Link>
+            </Button>
+          )}
         </nav>
       </div>
     </header>
