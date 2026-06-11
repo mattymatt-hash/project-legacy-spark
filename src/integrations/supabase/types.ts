@@ -14,7 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      stores: {
+        Row: {
+          banner_url: string | null
+          bio: string | null
+          created_at: string
+          handle: string
+          id: string
+          logo_url: string | null
+          name: string
+          owner_id: string
+          stripe_account_id: string | null
+          stripe_charges_enabled: boolean
+          updated_at: string
+        }
+        Insert: {
+          banner_url?: string | null
+          bio?: string | null
+          created_at?: string
+          handle: string
+          id?: string
+          logo_url?: string | null
+          name: string
+          owner_id: string
+          stripe_account_id?: string | null
+          stripe_charges_enabled?: boolean
+          updated_at?: string
+        }
+        Update: {
+          banner_url?: string | null
+          bio?: string | null
+          created_at?: string
+          handle?: string
+          id?: string
+          logo_url?: string | null
+          name?: string
+          owner_id?: string
+          stripe_account_id?: string | null
+          stripe_charges_enabled?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
