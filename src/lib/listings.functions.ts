@@ -221,12 +221,12 @@ export type PublicListing = {
   description: string;
   price_cents: number;
   currency: string;
-  condition: (typeof CONDITION_VALUES)[number];
-  category: (typeof CATEGORY_VALUES)[number];
+  condition: string;
+  category: string;
   stock: number;
   weight_oz: number;
   shipping_cents: number;
-  status: (typeof STATUS_VALUES)[number];
+  status: string;
   image_urls: string[];
   original_price_cents: number | null;
   tags: string[];

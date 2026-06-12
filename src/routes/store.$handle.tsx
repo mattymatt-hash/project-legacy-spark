@@ -1,6 +1,7 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { getStoreByHandle, getListingsByStore } from "@/lib/stores.functions";
+import { getStoreByHandle } from "@/lib/stores.functions";
+import { getListingsByStore, type PublicListing } from "@/lib/listings.functions";
 import { ListingCard } from "@/components/marketplace/ListingCard";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -101,7 +102,7 @@ function StorePage() {
           </section>
         ) : (
           <section className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
-            {listings.map((l) => <ListingCard key={l.id} listing={l} />)}
+            {listings.map((l: PublicListing) => <ListingCard key={l.id} listing={l} />)}
           </section>
         )}
       </main>
