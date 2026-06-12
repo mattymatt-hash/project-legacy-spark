@@ -71,7 +71,7 @@ export function Navbar() {
                   <Link to="/account"><User size={14} className="mr-2" /> Account</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/sell"><Store size={14} className="mr-2" /> Your store</Link>
+                  <Link to="/seller"><Store size={14} className="mr-2" /> Your store</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

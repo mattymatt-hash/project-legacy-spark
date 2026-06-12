@@ -1,9 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { CategoryTile } from "@/components/marketplace/CategoryTile";
-import { ProductCard } from "@/components/marketplace/ProductCard";
-import { categories, products, sellers } from "@/lib/mock/data";
+import { ListingCard } from "@/components/marketplace/ListingCard";
+import { getActiveListings } from "@/lib/listings.functions";
+import { categories } from "@/lib/mock/data";
 import { ArrowRight } from "lucide-react";
+
+const homeListingsQuery = queryOptions({
+  queryKey: ["listings", "home"],
+  queryFn: () => getActiveListings({ data: { sort: "new", limit: 24 } }),
+});
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -14,13 +21,24 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Honest goods from real people." },
     ],
   }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(homeListingsQuery),
+  errorComponent: ({ error }) => (
+    <SiteShell>
+      <div className="mx-auto max-w-2xl px-6 py-24 text-center">
+        <h1 className="font-display text-2xl font-bold">Something broke</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+      </div>
+    </SiteShell>
+  ),
+  notFoundComponent: () => <SiteShell><div className="p-12 text-center">Not found</div></SiteShell>,
   component: Index,
 });
 
 function Index() {
-  const trending = products.slice(0, 8);
-  const fresh = products.slice(8, 14);
-  const featuredSellers = sellers.slice(0, 4);
+  const { data: listings } = useSuspenseQuery(homeListingsQuery);
+  const trending = listings.slice(0, 8);
+  const fresh = listings.slice(8, 14);
+  const drop = listings.slice(0, 6);
 
   return (
     <SiteShell>
@@ -41,26 +59,26 @@ function Index() {
               <Link to="/browse" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90">
                 Start browsing <ArrowRight size={16} />
               </Link>
-              <Link to="/" className="inline-flex items-center gap-2 rounded-full border bg-card px-6 py-3 text-sm font-semibold transition hover:bg-muted">
+              <Link to="/sell" className="inline-flex items-center gap-2 rounded-full border bg-card px-6 py-3 text-sm font-semibold transition hover:bg-muted">
                 Open a store
               </Link>
             </div>
-            <dl className="mt-10 grid max-w-md grid-cols-3 gap-4">
-              {[["12k+", "Indie sellers"], ["180k", "Real items"], ["4.9★", "Avg rating"]].map(([n, l]) => (
-                <div key={l}>
-                  <dt className="font-display text-2xl font-bold">{n}</dt>
-                  <dd className="text-xs text-muted-foreground">{l}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
           <div className="relative">
-            <div className="grid grid-cols-2 gap-3">
-              <img src={products[0].images[0]} alt="" className="aspect-[3/4] w-full rounded-2xl object-cover" />
-              <img src={products[3].images[0]} alt="" className="mt-8 aspect-[3/4] w-full rounded-2xl object-cover" />
-              <img src={products[7].images[0]} alt="" className="aspect-[3/4] w-full rounded-2xl object-cover" />
-              <img src={products[11].images[0]} alt="" className="mt-8 aspect-[3/4] w-full rounded-2xl object-cover" />
-            </div>
+            {listings.length >= 4 ? (
+              <div className="grid grid-cols-2 gap-3">
+                {[0, 1, 2, 3].map((i) => (
+                  <img
+                    key={i}
+                    src={listings[i].image_urls[0] ?? "https://images.unsplash.com/photo-1481349518771-20055b2a7b24?w=600&q=70"}
+                    alt=""
+                    className={`aspect-[3/4] w-full rounded-2xl object-cover ${i % 2 ? "mt-8" : ""}`}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="aspect-[4/5] w-full rounded-2xl bg-gradient-to-br from-primary/20 to-accent/30" />
+            )}
           </div>
         </div>
       </section>
@@ -74,64 +92,57 @@ function Index() {
       </section>
 
       {/* Trending */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-        <SectionHeader title="Trending now" subtitle="What people are actually buying this week." link={{ to: "/browse", label: "See all" }} />
-        <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
-          {trending.map((p) => <ProductCard key={p.id} product={p} />)}
-        </div>
-      </section>
+      {trending.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+          <SectionHeader title="Fresh on the market" subtitle="The newest things sellers just put up." link={{ to: "/browse", label: "See all" }} />
+          <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+            {trending.map((p) => <ListingCard key={p.id} listing={p} />)}
+          </div>
+        </section>
+      )}
 
       {/* Editorial */}
-      <section className="mx-auto mt-10 max-w-7xl px-4 sm:px-6">
-        <div className="overflow-hidden rounded-3xl bg-foreground text-background">
-          <div className="grid gap-6 p-8 md:grid-cols-2 md:p-12">
-            <div>
-              <span className="text-xs uppercase tracking-wider opacity-70">This week's drop</span>
-              <h3 className="mt-3 font-display text-3xl font-bold md:text-4xl">Quietly excellent things, slightly under-priced.</h3>
-              <p className="mt-3 max-w-md opacity-80">Twelve picks from sellers we'd buy from regardless. Fresh batch every Sunday night.</p>
-              <Link to="/browse" className="mt-6 inline-flex items-center gap-2 rounded-full bg-background px-5 py-2.5 text-sm font-semibold text-foreground transition hover:opacity-90">
-                See the drop <ArrowRight size={14} />
-              </Link>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              {products.slice(14, 20).map((p) => (
-                <img key={p.id} src={p.images[0]} alt="" className="aspect-square w-full rounded-xl object-cover" />
-              ))}
+      {drop.length >= 6 && (
+        <section className="mx-auto mt-10 max-w-7xl px-4 sm:px-6">
+          <div className="overflow-hidden rounded-3xl bg-foreground text-background">
+            <div className="grid gap-6 p-8 md:grid-cols-2 md:p-12">
+              <div>
+                <span className="text-xs uppercase tracking-wider opacity-70">This week's drop</span>
+                <h3 className="mt-3 font-display text-3xl font-bold md:text-4xl">Quietly excellent things, slightly under-priced.</h3>
+                <p className="mt-3 max-w-md opacity-80">Fresh picks from indie sellers. New batch every week.</p>
+                <Link to="/browse" className="mt-6 inline-flex items-center gap-2 rounded-full bg-background px-5 py-2.5 text-sm font-semibold text-foreground transition hover:opacity-90">
+                  See the drop <ArrowRight size={14} />
+                </Link>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {drop.map((p) => (
+                  <img key={p.id} src={p.image_urls[0] ?? ""} alt="" className="aspect-square w-full rounded-xl object-cover" />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Fresh from sellers */}
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-        <SectionHeader title="New from indie sellers" subtitle="Hot off the workbench." link={{ to: "/browse", label: "Browse all" }} />
-        <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-6">
-          {fresh.map((p) => <ProductCard key={p.id} product={p} />)}
-        </div>
-      </section>
+      {/* More */}
+      {fresh.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeader title="More from the market" link={{ to: "/browse", label: "Browse all" }} />
+          <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-6">
+            {fresh.map((p) => <ListingCard key={p.id} listing={p} />)}
+          </div>
+        </section>
+      )}
 
-      {/* Sellers */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-        <SectionHeader title="Sellers worth following" />
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredSellers.map((s) => (
-            <div key={s.id} className="rounded-2xl border bg-card p-5">
-              <div className="flex items-center gap-3">
-                <img src={s.avatar} alt={s.name} className="h-14 w-14 rounded-full object-cover" />
-                <div className="min-w-0">
-                  <h4 className="truncate font-display text-lg font-semibold">{s.name}</h4>
-                  <p className="text-xs text-muted-foreground">{s.location}</p>
-                </div>
-              </div>
-              <p className="mt-4 line-clamp-3 text-sm text-muted-foreground">{s.bio}</p>
-              <div className="mt-4 flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">{s.sales.toLocaleString()} sales</span>
-                <span className="font-medium">★ {s.rating.toFixed(1)}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {listings.length === 0 && (
+        <section className="mx-auto max-w-2xl px-4 py-24 text-center">
+          <h2 className="font-display text-3xl font-bold">The market's just opening.</h2>
+          <p className="mt-3 text-muted-foreground">No listings yet — be the first to put something up.</p>
+          <Link to="/sell" className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">
+            Open a store
+          </Link>
+        </section>
+      )}
     </SiteShell>
   );
 }

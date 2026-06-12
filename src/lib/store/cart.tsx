@@ -1,25 +1,21 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { getProduct } from "@/lib/mock/data";
 
 export interface CartItem {
-  productId: string;
+  listingId: string;
   qty: number;
 }
 
 interface CartContextValue {
   items: CartItem[];
-  add: (productId: string, qty?: number) => void;
-  remove: (productId: string) => void;
-  setQty: (productId: string, qty: number) => void;
+  add: (listingId: string, qty?: number) => void;
+  remove: (listingId: string) => void;
+  setQty: (listingId: string, qty: number) => void;
   clear: () => void;
   count: number;
-  subtotal: number;
-  shipping: number;
-  total: number;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
-const KEY = "nobs.cart.v1";
+const KEY = "nobs.cart.v2";
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -39,37 +35,31 @@ export function CartProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(KEY, JSON.stringify(items));
   }, [items, hydrated]);
 
-  const add = useCallback((productId: string, qty = 1) => {
+  const add = useCallback((listingId: string, qty = 1) => {
     setItems((prev) => {
-      const found = prev.find((i) => i.productId === productId);
-      if (found) return prev.map((i) => (i.productId === productId ? { ...i, qty: i.qty + qty } : i));
-      return [...prev, { productId, qty }];
+      const found = prev.find((i) => i.listingId === listingId);
+      if (found) return prev.map((i) => (i.listingId === listingId ? { ...i, qty: i.qty + qty } : i));
+      return [...prev, { listingId, qty }];
     });
   }, []);
 
-  const remove = useCallback((productId: string) => {
-    setItems((prev) => prev.filter((i) => i.productId !== productId));
+  const remove = useCallback((listingId: string) => {
+    setItems((prev) => prev.filter((i) => i.listingId !== listingId));
   }, []);
 
-  const setQty = useCallback((productId: string, qty: number) => {
-    setItems((prev) => (qty <= 0 ? prev.filter((i) => i.productId !== productId) : prev.map((i) => (i.productId === productId ? { ...i, qty } : i))));
+  const setQty = useCallback((listingId: string, qty: number) => {
+    setItems((prev) =>
+      qty <= 0
+        ? prev.filter((i) => i.listingId !== listingId)
+        : prev.map((i) => (i.listingId === listingId ? { ...i, qty } : i)),
+    );
   }, []);
 
   const clear = useCallback(() => setItems([]), []);
 
-  const { count, subtotal, shipping } = useMemo(() => {
-    let count = 0, subtotal = 0, shipping = 0;
-    for (const it of items) {
-      const p = getProduct(it.productId);
-      if (!p) continue;
-      count += it.qty;
-      subtotal += p.price * it.qty;
-      shipping += p.shippingPrice;
-    }
-    return { count, subtotal, shipping };
-  }, [items]);
+  const count = useMemo(() => items.reduce((n, i) => n + i.qty, 0), [items]);
 
-  const value: CartContextValue = { items, add, remove, setQty, clear, count, subtotal, shipping, total: subtotal + shipping };
+  const value: CartContextValue = { items, add, remove, setQty, clear, count };
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 

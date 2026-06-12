@@ -20,6 +20,9 @@ import { Route as StoreHandleRouteImport } from './routes/store.$handle'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as AuthenticatedSellRouteImport } from './routes/_authenticated/sell'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
+import { Route as AuthenticatedSellerIndexRouteImport } from './routes/_authenticated/seller/index'
+import { Route as AuthenticatedSellerListingsNewRouteImport } from './routes/_authenticated/seller/listings/new'
+import { Route as AuthenticatedSellerListingsIdEditRouteImport } from './routes/_authenticated/seller/listings/$id/edit'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -75,6 +78,24 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   path: '/account',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSellerIndexRoute =
+  AuthenticatedSellerIndexRouteImport.update({
+    id: '/seller/',
+    path: '/seller/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSellerListingsNewRoute =
+  AuthenticatedSellerListingsNewRouteImport.update({
+    id: '/seller/listings/new',
+    path: '/seller/listings/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSellerListingsIdEditRoute =
+  AuthenticatedSellerListingsIdEditRouteImport.update({
+    id: '/seller/listings/$id/edit',
+    path: '/seller/listings/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -87,6 +108,9 @@ export interface FileRoutesByFullPath {
   '/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
   '/store/$handle': typeof StoreHandleRoute
+  '/seller/': typeof AuthenticatedSellerIndexRoute
+  '/seller/listings/new': typeof AuthenticatedSellerListingsNewRoute
+  '/seller/listings/$id/edit': typeof AuthenticatedSellerListingsIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -99,6 +123,9 @@ export interface FileRoutesByTo {
   '/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
   '/store/$handle': typeof StoreHandleRoute
+  '/seller': typeof AuthenticatedSellerIndexRoute
+  '/seller/listings/new': typeof AuthenticatedSellerListingsNewRoute
+  '/seller/listings/$id/edit': typeof AuthenticatedSellerListingsIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -113,6 +140,9 @@ export interface FileRoutesById {
   '/_authenticated/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
   '/store/$handle': typeof StoreHandleRoute
+  '/_authenticated/seller/': typeof AuthenticatedSellerIndexRoute
+  '/_authenticated/seller/listings/new': typeof AuthenticatedSellerListingsNewRoute
+  '/_authenticated/seller/listings/$id/edit': typeof AuthenticatedSellerListingsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,6 +157,9 @@ export interface FileRouteTypes {
     | '/sell'
     | '/product/$id'
     | '/store/$handle'
+    | '/seller/'
+    | '/seller/listings/new'
+    | '/seller/listings/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,6 +172,9 @@ export interface FileRouteTypes {
     | '/sell'
     | '/product/$id'
     | '/store/$handle'
+    | '/seller'
+    | '/seller/listings/new'
+    | '/seller/listings/$id/edit'
   id:
     | '__root__'
     | '/'
@@ -152,6 +188,9 @@ export interface FileRouteTypes {
     | '/_authenticated/sell'
     | '/product/$id'
     | '/store/$handle'
+    | '/_authenticated/seller/'
+    | '/_authenticated/seller/listings/new'
+    | '/_authenticated/seller/listings/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -245,17 +284,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/seller/': {
+      id: '/_authenticated/seller/'
+      path: '/seller'
+      fullPath: '/seller/'
+      preLoaderRoute: typeof AuthenticatedSellerIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/seller/listings/new': {
+      id: '/_authenticated/seller/listings/new'
+      path: '/seller/listings/new'
+      fullPath: '/seller/listings/new'
+      preLoaderRoute: typeof AuthenticatedSellerListingsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/seller/listings/$id/edit': {
+      id: '/_authenticated/seller/listings/$id/edit'
+      path: '/seller/listings/$id/edit'
+      fullPath: '/seller/listings/$id/edit'
+      preLoaderRoute: typeof AuthenticatedSellerListingsIdEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedSellRoute: typeof AuthenticatedSellRoute
+  AuthenticatedSellerIndexRoute: typeof AuthenticatedSellerIndexRoute
+  AuthenticatedSellerListingsNewRoute: typeof AuthenticatedSellerListingsNewRoute
+  AuthenticatedSellerListingsIdEditRoute: typeof AuthenticatedSellerListingsIdEditRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedSellRoute: AuthenticatedSellRoute,
+  AuthenticatedSellerIndexRoute: AuthenticatedSellerIndexRoute,
+  AuthenticatedSellerListingsNewRoute: AuthenticatedSellerListingsNewRoute,
+  AuthenticatedSellerListingsIdEditRoute:
+    AuthenticatedSellerListingsIdEditRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
