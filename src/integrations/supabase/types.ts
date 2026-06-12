@@ -14,6 +14,77 @@ export type Database = {
   }
   public: {
     Tables: {
+      listings: {
+        Row: {
+          category: string
+          condition: Database["public"]["Enums"]["listing_condition"]
+          created_at: string
+          currency: string
+          description: string
+          id: string
+          image_urls: string[]
+          original_price_cents: number | null
+          price_cents: number
+          shipping_cents: number
+          slug: string
+          status: Database["public"]["Enums"]["listing_status"]
+          stock: number
+          store_id: string
+          tags: string[]
+          title: string
+          updated_at: string
+          weight_oz: number
+        }
+        Insert: {
+          category: string
+          condition?: Database["public"]["Enums"]["listing_condition"]
+          created_at?: string
+          currency?: string
+          description?: string
+          id?: string
+          image_urls?: string[]
+          original_price_cents?: number | null
+          price_cents: number
+          shipping_cents?: number
+          slug: string
+          status?: Database["public"]["Enums"]["listing_status"]
+          stock?: number
+          store_id: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+          weight_oz?: number
+        }
+        Update: {
+          category?: string
+          condition?: Database["public"]["Enums"]["listing_condition"]
+          created_at?: string
+          currency?: string
+          description?: string
+          id?: string
+          image_urls?: string[]
+          original_price_cents?: number | null
+          price_cents?: number
+          shipping_cents?: number
+          slug?: string
+          status?: Database["public"]["Enums"]["listing_status"]
+          stock?: number
+          store_id?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+          weight_oz?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listings_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -88,7 +159,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      listing_condition: "new" | "like_new" | "good" | "vintage"
+      listing_status: "draft" | "active" | "sold" | "archived"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -215,6 +287,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      listing_condition: ["new", "like_new", "good", "vintage"],
+      listing_status: ["draft", "active", "sold", "archived"],
+    },
   },
 } as const
