@@ -26,7 +26,7 @@ export const Route = createFileRoute("/browse")({
   loaderDeps: ({ search }) => ({ category: search.category, q: search.q }),
   loader: ({ context, deps }) =>
     context.queryClient.ensureQueryData(listQuery({ ...deps, sort: "new" })),
-  head: ({ params }) => ({
+  head: () => ({
     meta: [
       { title: "Browse — NoBS Market" },
       { name: "description", content: "Browse handmade, vintage, and indie goods on NoBS Market." },
