@@ -85,6 +85,122 @@ export type Database = {
           },
         ]
       }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          listing_id: string
+          order_id: string
+          quantity: number
+          title: string
+          unit_price_cents: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          listing_id: string
+          order_id: string
+          quantity: number
+          title: string
+          unit_price_cents: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          listing_id?: string
+          order_id?: string
+          quantity?: number
+          title?: string
+          unit_price_cents?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          buyer_email: string | null
+          buyer_id: string
+          created_at: string
+          currency: string
+          id: string
+          platform_fee_cents: number
+          seller_payout_cents: number
+          shipping_address: Json | null
+          shipping_cents: number
+          shipping_name: string | null
+          status: Database["public"]["Enums"]["order_status"]
+          store_id: string
+          stripe_checkout_session_id: string | null
+          stripe_payment_intent_id: string | null
+          subtotal_cents: number
+          total_cents: number
+          updated_at: string
+        }
+        Insert: {
+          buyer_email?: string | null
+          buyer_id: string
+          created_at?: string
+          currency?: string
+          id?: string
+          platform_fee_cents: number
+          seller_payout_cents: number
+          shipping_address?: Json | null
+          shipping_cents?: number
+          shipping_name?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          store_id: string
+          stripe_checkout_session_id?: string | null
+          stripe_payment_intent_id?: string | null
+          subtotal_cents: number
+          total_cents: number
+          updated_at?: string
+        }
+        Update: {
+          buyer_email?: string | null
+          buyer_id?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          platform_fee_cents?: number
+          seller_payout_cents?: number
+          shipping_address?: Json | null
+          shipping_cents?: number
+          shipping_name?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          store_id?: string
+          stripe_checkout_session_id?: string | null
+          stripe_payment_intent_id?: string | null
+          subtotal_cents?: number
+          total_cents?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -161,6 +277,7 @@ export type Database = {
     Enums: {
       listing_condition: "new" | "like_new" | "good" | "vintage"
       listing_status: "draft" | "active" | "sold" | "archived"
+      order_status: "pending" | "paid" | "fulfilled" | "cancelled" | "refunded"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -290,6 +407,7 @@ export const Constants = {
     Enums: {
       listing_condition: ["new", "like_new", "good", "vintage"],
       listing_status: ["draft", "active", "sold", "archived"],
+      order_status: ["pending", "paid", "fulfilled", "cancelled", "refunded"],
     },
   },
 } as const

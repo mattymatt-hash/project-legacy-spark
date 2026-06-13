@@ -1,9 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { useCart } from "@/lib/store/cart";
 import { getListingsByIds } from "@/lib/listings.functions";
+import { createCheckoutSession } from "@/lib/checkout.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { formatPrice } from "@/lib/format";
 
 export const Route = createFileRoute("/cart")({
@@ -17,14 +22,36 @@ export const Route = createFileRoute("/cart")({
 });
 
 function CartPage() {
+  const navigate = useNavigate();
   const { items, setQty, remove, count } = useCart();
   const ids = items.map((i) => i.listingId);
+  const checkout = useServerFn(createCheckoutSession);
+  const [checkingOut, setCheckingOut] = useState(false);
 
   const { data: listings = [], isLoading } = useQuery({
     queryKey: ["cart-listings", ids.slice().sort().join(",")],
     queryFn: () => getListingsByIds({ data: { ids } }),
     enabled: ids.length > 0,
   });
+
+  async function onCheckout() {
+    const { data: userRes } = await supabase.auth.getUser();
+    if (!userRes.user) {
+      toast.info("Sign in to check out");
+      navigate({ to: "/auth" });
+      return;
+    }
+    setCheckingOut(true);
+    try {
+      const { url } = await checkout({
+        data: { items: items.map((i) => ({ listing_id: i.listingId, quantity: i.qty })) },
+      });
+      if (url) window.location.href = url;
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Checkout failed");
+      setCheckingOut(false);
+    }
+  }
 
   if (items.length === 0) {
     return (
@@ -43,13 +70,16 @@ function CartPage() {
   const byId = new Map(listings.map((l) => [l.id, l]));
   let subtotal = 0;
   let shipping = 0;
+  const storeIds = new Set<string>();
   for (const it of items) {
     const l = byId.get(it.listingId);
     if (!l) continue;
     subtotal += l.price_cents * it.qty;
     shipping += l.shipping_cents;
+    storeIds.add(l.store_id);
   }
   const total = subtotal + shipping;
+  const multiSeller = storeIds.size > 1;
 
   return (
     <SiteShell>
@@ -124,13 +154,19 @@ function CartPage() {
               <span className="font-display text-2xl font-bold">{formatPrice(total)}</span>
             </div>
             <button
-              disabled
+              onClick={onCheckout}
+              disabled={checkingOut || isLoading || multiSeller}
               className="mt-5 w-full rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
-              title="Checkout is wired in Phase 3"
             >
-              Checkout (coming soon)
+              {checkingOut ? "Redirecting…" : "Checkout"}
             </button>
-            <p className="mt-3 text-center text-xs text-muted-foreground">Stripe Connect checkout lands in the next phase.</p>
+            {multiSeller ? (
+              <p className="mt-3 text-center text-xs text-destructive">
+                Your cart has items from multiple sellers. Remove items so only one seller remains, then check out.
+              </p>
+            ) : (
+              <p className="mt-3 text-center text-xs text-muted-foreground">Secure checkout powered by Stripe.</p>
+            )}
           </aside>
         </div>
       </div>
