@@ -70,13 +70,16 @@ function CartPage() {
   const byId = new Map(listings.map((l) => [l.id, l]));
   let subtotal = 0;
   let shipping = 0;
+  const storeIds = new Set<string>();
   for (const it of items) {
     const l = byId.get(it.listingId);
     if (!l) continue;
     subtotal += l.price_cents * it.qty;
     shipping += l.shipping_cents;
+    storeIds.add(l.store_id);
   }
   const total = subtotal + shipping;
+  const multiSeller = storeIds.size > 1;
 
   return (
     <SiteShell>
@@ -151,13 +154,19 @@ function CartPage() {
               <span className="font-display text-2xl font-bold">{formatPrice(total)}</span>
             </div>
             <button
-              disabled
+              onClick={onCheckout}
+              disabled={checkingOut || isLoading || multiSeller}
               className="mt-5 w-full rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
-              title="Checkout is wired in Phase 3"
             >
-              Checkout (coming soon)
+              {checkingOut ? "Redirecting…" : "Checkout"}
             </button>
-            <p className="mt-3 text-center text-xs text-muted-foreground">Stripe Connect checkout lands in the next phase.</p>
+            {multiSeller ? (
+              <p className="mt-3 text-center text-xs text-destructive">
+                Your cart has items from multiple sellers. Remove items so only one seller remains, then check out.
+              </p>
+            ) : (
+              <p className="mt-3 text-center text-xs text-muted-foreground">Secure checkout powered by Stripe.</p>
+            )}
           </aside>
         </div>
       </div>
