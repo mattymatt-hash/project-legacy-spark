@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as OrderSuccessRouteImport } from './routes/order-success'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as BrowseRouteImport } from './routes/browse'
@@ -21,12 +22,18 @@ import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as AuthenticatedSellRouteImport } from './routes/_authenticated/sell'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedSellerIndexRouteImport } from './routes/_authenticated/seller/index'
+import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 import { Route as AuthenticatedSellerListingsNewRouteImport } from './routes/_authenticated/seller/listings/new'
 import { Route as AuthenticatedSellerListingsIdEditRouteImport } from './routes/_authenticated/seller/listings/$id/edit'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrderSuccessRoute = OrderSuccessRouteImport.update({
+  id: '/order-success',
+  path: '/order-success',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -84,6 +91,11 @@ const AuthenticatedSellerIndexRoute =
     path: '/seller/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
+  id: '/api/public/stripe-webhook',
+  path: '/api/public/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedSellerListingsNewRoute =
   AuthenticatedSellerListingsNewRouteImport.update({
     id: '/seller/listings/new',
@@ -103,11 +115,13 @@ export interface FileRoutesByFullPath {
   '/browse': typeof BrowseRoute
   '/cart': typeof CartRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
   '/account': typeof AuthenticatedAccountRoute
   '/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
   '/store/$handle': typeof StoreHandleRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/seller/': typeof AuthenticatedSellerIndexRoute
   '/seller/listings/new': typeof AuthenticatedSellerListingsNewRoute
   '/seller/listings/$id/edit': typeof AuthenticatedSellerListingsIdEditRoute
@@ -118,11 +132,13 @@ export interface FileRoutesByTo {
   '/browse': typeof BrowseRoute
   '/cart': typeof CartRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
   '/account': typeof AuthenticatedAccountRoute
   '/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
   '/store/$handle': typeof StoreHandleRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/seller': typeof AuthenticatedSellerIndexRoute
   '/seller/listings/new': typeof AuthenticatedSellerListingsNewRoute
   '/seller/listings/$id/edit': typeof AuthenticatedSellerListingsIdEditRoute
@@ -135,11 +151,13 @@ export interface FileRoutesById {
   '/browse': typeof BrowseRoute
   '/cart': typeof CartRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
   '/store/$handle': typeof StoreHandleRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/_authenticated/seller/': typeof AuthenticatedSellerIndexRoute
   '/_authenticated/seller/listings/new': typeof AuthenticatedSellerListingsNewRoute
   '/_authenticated/seller/listings/$id/edit': typeof AuthenticatedSellerListingsIdEditRoute
@@ -152,11 +170,13 @@ export interface FileRouteTypes {
     | '/browse'
     | '/cart'
     | '/forgot-password'
+    | '/order-success'
     | '/reset-password'
     | '/account'
     | '/sell'
     | '/product/$id'
     | '/store/$handle'
+    | '/api/public/stripe-webhook'
     | '/seller/'
     | '/seller/listings/new'
     | '/seller/listings/$id/edit'
@@ -167,11 +187,13 @@ export interface FileRouteTypes {
     | '/browse'
     | '/cart'
     | '/forgot-password'
+    | '/order-success'
     | '/reset-password'
     | '/account'
     | '/sell'
     | '/product/$id'
     | '/store/$handle'
+    | '/api/public/stripe-webhook'
     | '/seller'
     | '/seller/listings/new'
     | '/seller/listings/$id/edit'
@@ -183,11 +205,13 @@ export interface FileRouteTypes {
     | '/browse'
     | '/cart'
     | '/forgot-password'
+    | '/order-success'
     | '/reset-password'
     | '/_authenticated/account'
     | '/_authenticated/sell'
     | '/product/$id'
     | '/store/$handle'
+    | '/api/public/stripe-webhook'
     | '/_authenticated/seller/'
     | '/_authenticated/seller/listings/new'
     | '/_authenticated/seller/listings/$id/edit'
@@ -200,9 +224,11 @@ export interface RootRouteChildren {
   BrowseRoute: typeof BrowseRoute
   CartRoute: typeof CartRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  OrderSuccessRoute: typeof OrderSuccessRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ProductIdRoute: typeof ProductIdRoute
   StoreHandleRoute: typeof StoreHandleRoute
+  ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -212,6 +238,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/order-success': {
+      id: '/order-success'
+      path: '/order-success'
+      fullPath: '/order-success'
+      preLoaderRoute: typeof OrderSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -291,6 +324,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSellerIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/stripe-webhook': {
+      id: '/api/public/stripe-webhook'
+      path: '/api/public/stripe-webhook'
+      fullPath: '/api/public/stripe-webhook'
+      preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/seller/listings/new': {
       id: '/_authenticated/seller/listings/new'
       path: '/seller/listings/new'
@@ -335,9 +375,11 @@ const rootRouteChildren: RootRouteChildren = {
   BrowseRoute: BrowseRoute,
   CartRoute: CartRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  OrderSuccessRoute: OrderSuccessRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ProductIdRoute: ProductIdRoute,
   StoreHandleRoute: StoreHandleRoute,
+  ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
