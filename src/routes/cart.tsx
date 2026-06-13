@@ -22,14 +22,36 @@ export const Route = createFileRoute("/cart")({
 });
 
 function CartPage() {
+  const navigate = useNavigate();
   const { items, setQty, remove, count } = useCart();
   const ids = items.map((i) => i.listingId);
+  const checkout = useServerFn(createCheckoutSession);
+  const [checkingOut, setCheckingOut] = useState(false);
 
   const { data: listings = [], isLoading } = useQuery({
     queryKey: ["cart-listings", ids.slice().sort().join(",")],
     queryFn: () => getListingsByIds({ data: { ids } }),
     enabled: ids.length > 0,
   });
+
+  async function onCheckout() {
+    const { data: userRes } = await supabase.auth.getUser();
+    if (!userRes.user) {
+      toast.info("Sign in to check out");
+      navigate({ to: "/auth" });
+      return;
+    }
+    setCheckingOut(true);
+    try {
+      const { url } = await checkout({
+        data: { items: items.map((i) => ({ listing_id: i.listingId, quantity: i.qty })) },
+      });
+      if (url) window.location.href = url;
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Checkout failed");
+      setCheckingOut(false);
+    }
+  }
 
   if (items.length === 0) {
     return (
