@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { toast } from "sonner";
+import { ConnectPayouts } from "@/components/seller/ConnectPayouts";
 
 export const Route = createFileRoute("/_authenticated/sell")({
   head: () => ({ meta: [{ title: "Open your store — NoBS Market" }] }),
@@ -43,8 +44,12 @@ function SellPage() {
         <p className="mt-2 text-muted-foreground">
           <b>{existing.name}</b> at <code>/store/{existing.handle}</code>
         </p>
-        <div className="mt-6 flex gap-3">
+        <div className="mt-6 flex flex-wrap gap-3">
           <Button asChild><Link to="/store/$handle" params={{ handle: existing.handle }}>View storefront</Link></Button>
+          <Button variant="outline" asChild><Link to="/seller">Seller dashboard</Link></Button>
+        </div>
+        <div className="mt-8">
+          <ConnectPayouts />
         </div>
       </Shell>
     );
