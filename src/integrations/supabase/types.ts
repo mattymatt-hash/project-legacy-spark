@@ -21,8 +21,10 @@ export type Database = {
           created_at: string
           currency: string
           description: string
+          height_in: number | null
           id: string
           image_urls: string[]
+          length_in: number | null
           original_price_cents: number | null
           price_cents: number
           shipping_cents: number
@@ -34,6 +36,7 @@ export type Database = {
           title: string
           updated_at: string
           weight_oz: number
+          width_in: number | null
         }
         Insert: {
           category: string
@@ -41,8 +44,10 @@ export type Database = {
           created_at?: string
           currency?: string
           description?: string
+          height_in?: number | null
           id?: string
           image_urls?: string[]
+          length_in?: number | null
           original_price_cents?: number | null
           price_cents: number
           shipping_cents?: number
@@ -54,6 +59,7 @@ export type Database = {
           title: string
           updated_at?: string
           weight_oz?: number
+          width_in?: number | null
         }
         Update: {
           category?: string
@@ -61,8 +67,10 @@ export type Database = {
           created_at?: string
           currency?: string
           description?: string
+          height_in?: number | null
           id?: string
           image_urls?: string[]
+          length_in?: number | null
           original_price_cents?: number | null
           price_cents?: number
           shipping_cents?: number
@@ -74,6 +82,7 @@ export type Database = {
           title?: string
           updated_at?: string
           weight_oz?: number
+          width_in?: number | null
         }
         Relationships: [
           {
@@ -137,58 +146,88 @@ export type Database = {
         Row: {
           buyer_email: string | null
           buyer_id: string
+          carrier: string | null
           created_at: string
           currency: string
+          easypost_rate_id: string | null
+          easypost_shipment_id: string | null
+          easypost_tracker_id: string | null
           id: string
+          label_url: string | null
           platform_fee_cents: number
           seller_payout_cents: number
+          service: string | null
           shipping_address: Json | null
           shipping_cents: number
           shipping_name: string | null
+          shipping_status: string | null
           status: Database["public"]["Enums"]["order_status"]
           store_id: string
           stripe_checkout_session_id: string | null
           stripe_payment_intent_id: string | null
           subtotal_cents: number
+          to_address: Json | null
           total_cents: number
+          tracking_code: string | null
+          tracking_url: string | null
           updated_at: string
         }
         Insert: {
           buyer_email?: string | null
           buyer_id: string
+          carrier?: string | null
           created_at?: string
           currency?: string
+          easypost_rate_id?: string | null
+          easypost_shipment_id?: string | null
+          easypost_tracker_id?: string | null
           id?: string
+          label_url?: string | null
           platform_fee_cents: number
           seller_payout_cents: number
+          service?: string | null
           shipping_address?: Json | null
           shipping_cents?: number
           shipping_name?: string | null
+          shipping_status?: string | null
           status?: Database["public"]["Enums"]["order_status"]
           store_id: string
           stripe_checkout_session_id?: string | null
           stripe_payment_intent_id?: string | null
           subtotal_cents: number
+          to_address?: Json | null
           total_cents: number
+          tracking_code?: string | null
+          tracking_url?: string | null
           updated_at?: string
         }
         Update: {
           buyer_email?: string | null
           buyer_id?: string
+          carrier?: string | null
           created_at?: string
           currency?: string
+          easypost_rate_id?: string | null
+          easypost_shipment_id?: string | null
+          easypost_tracker_id?: string | null
           id?: string
+          label_url?: string | null
           platform_fee_cents?: number
           seller_payout_cents?: number
+          service?: string | null
           shipping_address?: Json | null
           shipping_cents?: number
           shipping_name?: string | null
+          shipping_status?: string | null
           status?: Database["public"]["Enums"]["order_status"]
           store_id?: string
           stripe_checkout_session_id?: string | null
           stripe_payment_intent_id?: string | null
           subtotal_cents?: number
+          to_address?: Json | null
           total_cents?: number
+          tracking_code?: string | null
+          tracking_url?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -230,6 +269,7 @@ export type Database = {
           banner_url: string | null
           bio: string | null
           created_at: string
+          from_address: Json | null
           handle: string
           id: string
           logo_url: string | null
@@ -243,6 +283,7 @@ export type Database = {
           banner_url?: string | null
           bio?: string | null
           created_at?: string
+          from_address?: Json | null
           handle: string
           id?: string
           logo_url?: string | null
@@ -256,6 +297,7 @@ export type Database = {
           banner_url?: string | null
           bio?: string | null
           created_at?: string
+          from_address?: Json | null
           handle?: string
           id?: string
           logo_url?: string | null

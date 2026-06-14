@@ -21,6 +21,9 @@ const inputBase = z.object({
   original_price_cents: z.number().int().min(0).max(10_000_000).nullable().optional(),
   shipping_cents: z.number().int().min(0).max(1_000_000).default(0),
   weight_oz: z.number().min(0).max(10_000).default(8),
+  length_in: z.number().min(0).max(200).default(6),
+  width_in: z.number().min(0).max(200).default(4),
+  height_in: z.number().min(0).max(200).default(2),
   stock: z.number().int().min(0).max(10_000).default(1),
   condition: z.enum(CONDITION_VALUES).default("new"),
   category: z.enum(CATEGORY_VALUES),
@@ -30,7 +33,7 @@ const inputBase = z.object({
 });
 
 const LISTING_SELECT =
-  "id, store_id, title, slug, description, price_cents, currency, condition, category, stock, weight_oz, shipping_cents, status, image_urls, original_price_cents, tags, created_at, store:stores!inner(id, handle, name, logo_url)";
+  "id, store_id, title, slug, description, price_cents, currency, condition, category, stock, weight_oz, length_in, width_in, height_in, shipping_cents, status, image_urls, original_price_cents, tags, created_at, store:stores!inner(id, handle, name, logo_url)";
 
 const PUBLIC_FILTER = "status.eq.active";
 
@@ -225,6 +228,9 @@ export type PublicListing = {
   category: string;
   stock: number;
   weight_oz: number;
+  length_in: number | null;
+  width_in: number | null;
+  height_in: number | null;
   shipping_cents: number;
   status: string;
   image_urls: string[];

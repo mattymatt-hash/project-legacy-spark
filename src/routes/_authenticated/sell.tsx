@@ -10,6 +10,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { toast } from "sonner";
 import { ConnectPayouts } from "@/components/seller/ConnectPayouts";
+import { FromAddressForm } from "@/components/seller/FromAddressForm";
 
 export const Route = createFileRoute("/_authenticated/sell")({
   head: () => ({ meta: [{ title: "Open your store — NoBS Market" }] }),
@@ -48,8 +49,9 @@ function SellPage() {
           <Button asChild><Link to="/store/$handle" params={{ handle: existing.handle }}>View storefront</Link></Button>
           <Button variant="outline" asChild><Link to="/seller">Seller dashboard</Link></Button>
         </div>
-        <div className="mt-8">
+        <div className="mt-8 space-y-6">
           <ConnectPayouts />
+          <FromAddressForm />
         </div>
       </Shell>
     );

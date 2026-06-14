@@ -8,6 +8,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { ConnectPayouts } from "@/components/seller/ConnectPayouts";
+import { OrdersPanel } from "@/components/seller/OrdersPanel";
 import { formatPrice } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/seller/")({
@@ -55,6 +56,12 @@ function SellerDashboard() {
             </div>
 
             <div className="mt-6"><ConnectPayouts /></div>
+
+            <section className="mt-8">
+              <h2 className="font-display text-xl font-semibold">Orders</h2>
+              <div className="mt-4"><OrdersPanel /></div>
+            </section>
+
 
             <section className="mt-8">
               <h2 className="font-display text-xl font-semibold">Your listings</h2>

@@ -26,6 +26,9 @@ export interface ListingFormInitial {
   original_price_cents?: number | null;
   shipping_cents?: number;
   weight_oz?: number;
+  length_in?: number | null;
+  width_in?: number | null;
+  height_in?: number | null;
   stock?: number;
   condition?: string;
   category?: string;
@@ -49,6 +52,9 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
   const [shipping, setShipping] = useState(centsToDollarString(initial?.shipping_cents ?? 0));
   const [stock, setStock] = useState(String(initial?.stock ?? 1));
   const [weight, setWeight] = useState(String(initial?.weight_oz ?? 8));
+  const [lengthIn, setLengthIn] = useState(String(initial?.length_in ?? 6));
+  const [widthIn, setWidthIn] = useState(String(initial?.width_in ?? 4));
+  const [heightIn, setHeightIn] = useState(String(initial?.height_in ?? 2));
   const [category, setCategory] = useState(initial?.category ?? "handmade");
   const [condition, setCondition] = useState(initial?.condition ?? "new");
   const [status, setStatus] = useState(initial?.status ?? "active");
@@ -78,6 +84,9 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
         shipping_cents: dollarsToCents(shipping),
         stock: Number(stock) || 0,
         weight_oz: Number(weight) || 8,
+        length_in: Number(lengthIn) || 6,
+        width_in: Number(widthIn) || 4,
+        height_in: Number(heightIn) || 2,
         category,
         condition,
         status,
@@ -136,11 +145,20 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
         <Field label="Shipping (USD)">
           <Input type="number" min="0" step="0.01" value={shipping} onChange={(e) => setShipping(e.target.value)} />
         </Field>
-        <Field label="Weight (oz, for shipping)">
+        <Field label="Weight (oz)" hint="Used for live shipping rates.">
           <Input type="number" min="0" step="0.1" value={weight} onChange={(e) => setWeight(e.target.value)} />
         </Field>
         <Field label="Stock">
           <Input type="number" min="0" step="1" value={stock} onChange={(e) => setStock(e.target.value)} />
+        </Field>
+        <Field label="Length (in)">
+          <Input type="number" min="0" step="0.1" value={lengthIn} onChange={(e) => setLengthIn(e.target.value)} />
+        </Field>
+        <Field label="Width (in)">
+          <Input type="number" min="0" step="0.1" value={widthIn} onChange={(e) => setWidthIn(e.target.value)} />
+        </Field>
+        <Field label="Height (in)">
+          <Input type="number" min="0" step="0.1" value={heightIn} onChange={(e) => setHeightIn(e.target.value)} />
         </Field>
         <Field label="Category">
           <select
