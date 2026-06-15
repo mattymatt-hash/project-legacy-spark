@@ -144,6 +144,16 @@ function OrdersPage() {
         )}
       </main>
       <Footer />
+      {reviewing && (
+        <ReviewDialog
+          open
+          onOpenChange={(v) => !v && setReviewing(null)}
+          orderId={reviewing.orderId}
+          listingId={reviewing.listingId}
+          itemTitle={reviewing.title}
+          initialRating={reviewing.rating ?? 0}
+        />
+      )}
     </div>
   );
 }
