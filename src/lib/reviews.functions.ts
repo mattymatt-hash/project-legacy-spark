@@ -12,22 +12,21 @@ export const getListingReviews = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: rows, error } = await supabaseAdmin
       .from("reviews")
-      .select("id, rating, body, created_at, buyer_id, buyer:profiles!reviews_buyer_id_fkey(display_name, avatar_url)")
+      .select("id, rating, body, created_at, buyer_id")
       .eq("listing_id", data.listing_id)
       .order("created_at", { ascending: false })
       .limit(50);
-    if (error) {
-      // profiles FK may not be named — fall back to a simpler shape
-      const { data: rows2, error: err2 } = await supabaseAdmin
-        .from("reviews")
-        .select("id, rating, body, created_at, buyer_id")
-        .eq("listing_id", data.listing_id)
-        .order("created_at", { ascending: false })
-        .limit(50);
-      if (err2) throw new Error(err2.message);
-      return (rows2 ?? []).map((r) => ({ ...r, buyer: null }));
+    if (error) throw new Error(error.message);
+    const ids = Array.from(new Set((rows ?? []).map((r) => r.buyer_id)));
+    let profiles: Record<string, { display_name: string | null; avatar_url: string | null }> = {};
+    if (ids.length) {
+      const { data: profs } = await supabaseAdmin
+        .from("profiles")
+        .select("id, display_name, avatar_url")
+        .in("id", ids);
+      profiles = Object.fromEntries((profs ?? []).map((p) => [p.id, { display_name: p.display_name, avatar_url: p.avatar_url }]));
     }
-    return rows ?? [];
+    return (rows ?? []).map((r) => ({ ...r, buyer: profiles[r.buyer_id] ?? null }));
   });
 
 export const getStoreReviews = createServerFn({ method: "GET" })
