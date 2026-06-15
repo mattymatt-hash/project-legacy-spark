@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Package } from "lucide-react";
+import { useState } from "react";
+import { ExternalLink, Package, Star } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
+import { ReviewDialog } from "@/components/orders/ReviewDialog";
 import { getMyOrders } from "@/lib/checkout.functions";
 import { formatPrice } from "@/lib/format";
 
@@ -33,6 +35,7 @@ function OrdersPage() {
     queryKey: ["my-orders"],
     queryFn: () => load(),
   });
+  const [reviewing, setReviewing] = useState<{ orderId: string; listingId: string; title: string; rating?: number } | null>(null);
 
   return (
     <div className="min-h-screen bg-background">
@@ -56,8 +59,11 @@ function OrdersPage() {
         ) : (
           <ul className="space-y-4">
             {data.map((o) => {
-              const items = (o.order_items ?? []) as { title: string; quantity: number; unit_price_cents: number; image_url: string | null }[];
+              const items = (o.order_items ?? []) as { listing_id: string; title: string; quantity: number; unit_price_cents: number; image_url: string | null }[];
+              const reviews = ((o as { reviews?: { id: string; listing_id: string; rating: number }[] }).reviews ?? []);
+              const reviewByListing = new Map(reviews.map((r) => [r.listing_id, r]));
               const store = (o as { store?: { handle: string; name: string } | null }).store;
+              const canReview = o.status === "paid";
               return (
                 <li key={o.id} className="overflow-hidden rounded-2xl border bg-card">
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b bg-muted/30 px-5 py-3 text-sm">
@@ -75,24 +81,46 @@ function OrdersPage() {
 
                   <div className="grid gap-4 px-5 py-4 sm:grid-cols-[1fr_auto]">
                     <ul className="space-y-3">
-                      {items.map((i, idx) => (
-                        <li key={idx} className="flex items-center gap-3">
-                          {i.image_url ? (
-                            <img src={i.image_url} alt="" className="h-14 w-14 rounded-md object-cover" />
-                          ) : (
-                            <div className="grid h-14 w-14 place-items-center rounded-md bg-muted text-muted-foreground">
-                              <Package size={18} />
+                      {items.map((i, idx) => {
+                        const existing = reviewByListing.get(i.listing_id);
+                        return (
+                          <li key={idx} className="flex items-center gap-3">
+                            {i.image_url ? (
+                              <img src={i.image_url} alt="" className="h-14 w-14 rounded-md object-cover" />
+                            ) : (
+                              <div className="grid h-14 w-14 place-items-center rounded-md bg-muted text-muted-foreground">
+                                <Package size={18} />
+                              </div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                              <div className="truncate text-sm font-medium">{i.title}</div>
+                              <div className="text-xs text-muted-foreground">
+                                Qty {i.quantity} · {formatPrice(i.unit_price_cents, o.currency?.toUpperCase() ?? "USD")}
+                              </div>
                             </div>
-                          )}
-                          <div className="min-w-0 flex-1">
-                            <div className="truncate text-sm font-medium">{i.title}</div>
-                            <div className="text-xs text-muted-foreground">
-                              Qty {i.quantity} · {formatPrice(i.unit_price_cents, o.currency?.toUpperCase() ?? "USD")}
-                            </div>
-                          </div>
-                        </li>
-                      ))}
+                            {canReview && (
+                              <Button
+                                size="sm"
+                                variant={existing ? "ghost" : "outline"}
+                                onClick={() =>
+                                  setReviewing({
+                                    orderId: o.id,
+                                    listingId: i.listing_id,
+                                    title: i.title,
+                                    rating: existing?.rating,
+                                  })
+                                }
+                              >
+                                <Star size={14} className={existing ? "fill-current" : ""} />
+                                {existing ? "Edit review" : "Review"}
+                              </Button>
+                            )}
+                          </li>
+                        );
+                      })}
                     </ul>
+
+
 
                     <div className="flex flex-col items-start gap-2 sm:items-end">
                       {store && (
@@ -116,6 +144,16 @@ function OrdersPage() {
         )}
       </main>
       <Footer />
+      {reviewing && (
+        <ReviewDialog
+          open
+          onOpenChange={(v) => !v && setReviewing(null)}
+          orderId={reviewing.orderId}
+          listingId={reviewing.listingId}
+          itemTitle={reviewing.title}
+          initialRating={reviewing.rating ?? 0}
+        />
+      )}
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { Heart, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { PriceTag } from "@/components/marketplace/PriceTag";
 import { ListingCard } from "@/components/marketplace/ListingCard";
+import { StarRow } from "@/components/marketplace/StarRating";
+import { ListingReviews } from "@/components/marketplace/ReviewList";
 import { getListingById, getActiveListings } from "@/lib/listings.functions";
 import { useCart } from "@/lib/store/cart";
 import { useFavorites } from "@/lib/store/favorites";
@@ -124,6 +126,13 @@ function ProductPage() {
               {CONDITION_LABELS[listing.condition]}
             </span>
             <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl">{listing.title}</h1>
+            {listing.rating_count > 0 && (
+              <div className="mt-2 flex items-center gap-2 text-sm">
+                <StarRow value={Number(listing.rating_avg)} />
+                <span className="font-medium">{Number(listing.rating_avg).toFixed(1)}</span>
+                <span className="text-muted-foreground">({listing.rating_count} review{listing.rating_count === 1 ? "" : "s"})</span>
+              </div>
+            )}
             <div className="mt-3 flex items-center gap-4">
               <PriceTag price={listing.price_cents} original={listing.original_price_cents ?? undefined} className="text-2xl" />
             </div>
@@ -185,6 +194,13 @@ function ProductPage() {
             </Link>
           </div>
         </div>
+
+        <section className="mt-16">
+          <h2 className="font-display text-2xl font-bold">Reviews</h2>
+          <div className="mt-6">
+            <ListingReviews listingId={listing.id} />
+          </div>
+        </section>
 
         {related.length > 0 && (
           <section className="mt-16">

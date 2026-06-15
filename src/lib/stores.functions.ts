@@ -56,7 +56,7 @@ export const getStoreByHandle = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: store, error } = await supabaseAdmin
       .from("stores")
-      .select("id, handle, name, bio, logo_url, banner_url, created_at")
+      .select("id, handle, name, bio, logo_url, banner_url, rating_avg, rating_count, created_at")
       .eq("handle", data.handle)
       .maybeSingle();
     if (error) throw new Error(error.message);
