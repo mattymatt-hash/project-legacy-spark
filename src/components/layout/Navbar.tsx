@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Heart, ShoppingBag, Search, User, Plus, LogOut, Store } from "lucide-react";
+import { Heart, ShoppingBag, Search, User, Plus, LogOut, Store, Package } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useFavorites } from "@/lib/store/favorites";
 import { useAuth } from "@/lib/auth/useAuth";
@@ -69,6 +69,9 @@ export function Navbar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to="/account"><User size={14} className="mr-2" /> Account</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/orders"><Package size={14} className="mr-2" /> Your orders</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/seller"><Store size={14} className="mr-2" /> Your store</Link>

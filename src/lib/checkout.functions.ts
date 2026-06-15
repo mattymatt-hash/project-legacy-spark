@@ -253,7 +253,8 @@ export const getMyOrders = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("orders")
-      .select("id, total_cents, status, currency, created_at, store:stores!inner(handle, name), order_items(title, quantity, image_url)")
+      .select("id, total_cents, subtotal_cents, shipping_cents, status, currency, created_at, carrier, service, shipping_status, tracking_code, tracking_url, store:stores!inner(handle, name), order_items(title, quantity, unit_price_cents, image_url)")
+      .eq("buyer_id", context.userId)
       .order("created_at", { ascending: false })
       .limit(50);
     if (error) throw new Error(error.message);
