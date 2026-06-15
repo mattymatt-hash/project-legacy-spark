@@ -6,6 +6,8 @@ import { ListingCard } from "@/components/marketplace/ListingCard";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
+import { StarRow } from "@/components/marketplace/StarRating";
+import { StoreReviews } from "@/components/marketplace/ReviewList";
 
 const storeQuery = (handle: string) =>
   queryOptions({
@@ -92,6 +94,13 @@ function StorePage() {
           <div>
             <h1 className="font-display text-3xl font-bold">{store.name}</h1>
             <p className="text-sm text-muted-foreground">@{store.handle}</p>
+            {store.rating_count > 0 && (
+              <div className="mt-1 flex items-center gap-2 text-sm">
+                <StarRow value={Number(store.rating_avg)} />
+                <span className="font-medium">{Number(store.rating_avg).toFixed(1)}</span>
+                <span className="text-muted-foreground">({store.rating_count})</span>
+              </div>
+            )}
           </div>
         </div>
         {store.bio && <p className="mt-6 max-w-2xl text-muted-foreground">{store.bio}</p>}
@@ -105,6 +114,11 @@ function StorePage() {
             {listings.map((l: PublicListing) => <ListingCard key={l.id} listing={l} />)}
           </section>
         )}
+
+        <section className="mt-16">
+          <h2 className="font-display text-2xl font-bold">Reviews</h2>
+          <div className="mt-6"><StoreReviews handle={store.handle} /></div>
+        </section>
       </main>
       <Footer />
     </div>
