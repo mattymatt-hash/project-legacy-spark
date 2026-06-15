@@ -33,7 +33,7 @@ const inputBase = z.object({
 });
 
 const LISTING_SELECT =
-  "id, store_id, title, slug, description, price_cents, currency, condition, category, stock, weight_oz, length_in, width_in, height_in, shipping_cents, status, image_urls, original_price_cents, tags, created_at, store:stores!inner(id, handle, name, logo_url)";
+  "id, store_id, title, slug, description, price_cents, currency, condition, category, stock, weight_oz, length_in, width_in, height_in, shipping_cents, status, image_urls, original_price_cents, tags, rating_avg, rating_count, created_at, store:stores!inner(id, handle, name, logo_url, rating_avg, rating_count)";
 
 const PUBLIC_FILTER = "status.eq.active";
 
