@@ -27,6 +27,8 @@ export type Database = {
           length_in: number | null
           original_price_cents: number | null
           price_cents: number
+          rating_avg: number
+          rating_count: number
           shipping_cents: number
           slug: string
           status: Database["public"]["Enums"]["listing_status"]
@@ -50,6 +52,8 @@ export type Database = {
           length_in?: number | null
           original_price_cents?: number | null
           price_cents: number
+          rating_avg?: number
+          rating_count?: number
           shipping_cents?: number
           slug: string
           status?: Database["public"]["Enums"]["listing_status"]
@@ -73,6 +77,8 @@ export type Database = {
           length_in?: number | null
           original_price_cents?: number | null
           price_cents?: number
+          rating_avg?: number
+          rating_count?: number
           shipping_cents?: number
           slug?: string
           status?: Database["public"]["Enums"]["listing_status"]
@@ -264,6 +270,64 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          body: string | null
+          buyer_id: string
+          created_at: string
+          id: string
+          listing_id: string
+          order_id: string
+          rating: number
+          store_id: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string | null
+          buyer_id: string
+          created_at?: string
+          id?: string
+          listing_id: string
+          order_id: string
+          rating: number
+          store_id: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string | null
+          buyer_id?: string
+          created_at?: string
+          id?: string
+          listing_id?: string
+          order_id?: string
+          rating?: number
+          store_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stores: {
         Row: {
           banner_url: string | null
@@ -275,6 +339,8 @@ export type Database = {
           logo_url: string | null
           name: string
           owner_id: string
+          rating_avg: number
+          rating_count: number
           stripe_account_id: string | null
           stripe_charges_enabled: boolean
           updated_at: string
@@ -289,6 +355,8 @@ export type Database = {
           logo_url?: string | null
           name: string
           owner_id: string
+          rating_avg?: number
+          rating_count?: number
           stripe_account_id?: string | null
           stripe_charges_enabled?: boolean
           updated_at?: string
@@ -303,6 +371,8 @@ export type Database = {
           logo_url?: string | null
           name?: string
           owner_id?: string
+          rating_avg?: number
+          rating_count?: number
           stripe_account_id?: string | null
           stripe_charges_enabled?: boolean
           updated_at?: string
@@ -314,7 +384,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      recalc_review_aggregates: {
+        Args: { _listing_id: string; _store_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       listing_condition: "new" | "like_new" | "good" | "vintage"
