@@ -20,6 +20,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as StoreHandleRouteImport } from './routes/store.$handle'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as AuthenticatedSellRouteImport } from './routes/_authenticated/sell'
+import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated/orders'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedSellerIndexRouteImport } from './routes/_authenticated/seller/index'
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
@@ -80,6 +81,11 @@ const AuthenticatedSellRoute = AuthenticatedSellRouteImport.update({
   path: '/sell',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOrdersRoute = AuthenticatedOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   id: '/account',
   path: '/account',
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/orders': typeof AuthenticatedOrdersRoute
   '/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
   '/store/$handle': typeof StoreHandleRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/orders': typeof AuthenticatedOrdersRoute
   '/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
   '/store/$handle': typeof StoreHandleRoute
@@ -154,6 +162,7 @@ export interface FileRoutesById {
   '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
+  '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/_authenticated/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
   '/store/$handle': typeof StoreHandleRoute
@@ -173,6 +182,7 @@ export interface FileRouteTypes {
     | '/order-success'
     | '/reset-password'
     | '/account'
+    | '/orders'
     | '/sell'
     | '/product/$id'
     | '/store/$handle'
@@ -190,6 +200,7 @@ export interface FileRouteTypes {
     | '/order-success'
     | '/reset-password'
     | '/account'
+    | '/orders'
     | '/sell'
     | '/product/$id'
     | '/store/$handle'
@@ -208,6 +219,7 @@ export interface FileRouteTypes {
     | '/order-success'
     | '/reset-password'
     | '/_authenticated/account'
+    | '/_authenticated/orders'
     | '/_authenticated/sell'
     | '/product/$id'
     | '/store/$handle'
@@ -310,6 +322,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSellRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/orders': {
+      id: '/_authenticated/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof AuthenticatedOrdersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/account': {
       id: '/_authenticated/account'
       path: '/account'
@@ -350,6 +369,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+  AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedSellRoute: typeof AuthenticatedSellRoute
   AuthenticatedSellerIndexRoute: typeof AuthenticatedSellerIndexRoute
   AuthenticatedSellerListingsNewRoute: typeof AuthenticatedSellerListingsNewRoute
@@ -358,6 +378,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+  AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedSellRoute: AuthenticatedSellRoute,
   AuthenticatedSellerIndexRoute: AuthenticatedSellerIndexRoute,
   AuthenticatedSellerListingsNewRoute: AuthenticatedSellerListingsNewRoute,
