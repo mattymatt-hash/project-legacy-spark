@@ -4,7 +4,7 @@
 const API = "https://api.stripe.com/v1";
 
 function getKey(): string {
-  const key = process.env.STRIPE_SECRET_KEY;
+  const key = process.env.STRIPE_SECRET_KEY || process.env.STRIPE_TEST_API_KEY;
   if (!key) throw new Error("STRIPE_SECRET_KEY is not set");
   return key;
 }
