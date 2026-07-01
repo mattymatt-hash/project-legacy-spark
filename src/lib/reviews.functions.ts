@@ -44,7 +44,7 @@ export const getListingReviews = createServerFn({ method: "GET" })
       data.sort,
     ).range(data.offset, data.offset + data.limit - 1);
     if (error) throw new Error(error.message);
-    const ids = Array.from(new Set((rows ?? []).map((r: { buyer_id: string }) => r.buyer_id)));
+    const ids = Array.from(new Set((rows ?? []).map((r: { buyer_id: string }) => r.buyer_id))) as string[];
     let profiles: Record<string, { display_name: string | null; avatar_url: string | null }> = {};
     if (ids.length) {
       const { data: profs } = await supabaseAdmin
