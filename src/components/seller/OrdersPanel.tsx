@@ -3,15 +3,17 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { getStoreOrders } from "@/lib/checkout.functions";
+import { getStoreOrders, refundOrder } from "@/lib/checkout.functions";
 import { buyShippingLabel } from "@/lib/shipping.functions";
 import { formatPrice } from "@/lib/format";
 
 export function OrdersPanel() {
   const loadOrders = useServerFn(getStoreOrders);
   const buyLabel = useServerFn(buyShippingLabel);
+  const refund = useServerFn(refundOrder);
   const ordersQ = useQuery({ queryKey: ["store-orders"], queryFn: () => loadOrders() });
   const [busy, setBusy] = useState<string | null>(null);
+  const [refunding, setRefunding] = useState<string | null>(null);
 
   async function onBuyLabel(orderId: string) {
     setBusy(orderId);
@@ -24,6 +26,20 @@ export function OrdersPanel() {
       toast.error(err instanceof Error ? err.message : "Could not buy label");
     } finally {
       setBusy(null);
+    }
+  }
+
+  async function onRefund(orderId: string) {
+    if (!confirm("Refund this order in full? This will reverse the payment and remove any reviews the buyer left.")) return;
+    setRefunding(orderId);
+    try {
+      await refund({ data: { order_id: orderId } });
+      toast.success("Refund issued");
+      ordersQ.refetch();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not refund");
+    } finally {
+      setRefunding(null);
     }
   }
 
