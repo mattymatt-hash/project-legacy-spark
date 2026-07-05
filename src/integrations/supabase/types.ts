@@ -161,6 +161,8 @@ export type Database = {
           id: string
           label_url: string | null
           platform_fee_cents: number
+          refund_amount_cents: number
+          refunded_at: string | null
           seller_payout_cents: number
           service: string | null
           shipping_address: Json | null
@@ -171,6 +173,7 @@ export type Database = {
           store_id: string
           stripe_checkout_session_id: string | null
           stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
           subtotal_cents: number
           to_address: Json | null
           total_cents: number
@@ -190,6 +193,8 @@ export type Database = {
           id?: string
           label_url?: string | null
           platform_fee_cents: number
+          refund_amount_cents?: number
+          refunded_at?: string | null
           seller_payout_cents: number
           service?: string | null
           shipping_address?: Json | null
@@ -200,6 +205,7 @@ export type Database = {
           store_id: string
           stripe_checkout_session_id?: string | null
           stripe_payment_intent_id?: string | null
+          stripe_refund_id?: string | null
           subtotal_cents: number
           to_address?: Json | null
           total_cents: number
@@ -219,6 +225,8 @@ export type Database = {
           id?: string
           label_url?: string | null
           platform_fee_cents?: number
+          refund_amount_cents?: number
+          refunded_at?: string | null
           seller_payout_cents?: number
           service?: string | null
           shipping_address?: Json | null
@@ -229,6 +237,7 @@ export type Database = {
           store_id?: string
           stripe_checkout_session_id?: string | null
           stripe_payment_intent_id?: string | null
+          stripe_refund_id?: string | null
           subtotal_cents?: number
           to_address?: Json | null
           total_cents?: number
