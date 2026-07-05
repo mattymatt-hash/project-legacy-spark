@@ -65,6 +65,7 @@ export function OrdersPanel() {
           {ordersQ.data.map((o) => {
             const items = (o as { order_items?: { title: string; quantity: number }[] }).order_items ?? [];
             const canBuy = o.status === "paid" && !o.label_url;
+            const canRefund = o.status === "paid" || o.status === "fulfilled";
             return (
               <tr key={o.id} className="border-t align-top">
                 <td className="px-4 py-3">
@@ -77,7 +78,12 @@ export function OrdersPanel() {
                 </td>
                 <td className="px-4 py-3">{formatPrice(o.total_cents)}</td>
                 <td className="px-4 py-3">{formatPrice(o.seller_payout_cents)}</td>
-                <td className="px-4 py-3"><span className="rounded-full bg-muted px-2 py-0.5 text-xs capitalize">{o.status}</span></td>
+                <td className="px-4 py-3">
+                  <span className="rounded-full bg-muted px-2 py-0.5 text-xs capitalize">{o.status}</span>
+                  {o.status === "refunded" && o.refund_amount_cents ? (
+                    <div className="mt-1 text-[10px] text-muted-foreground">−{formatPrice(o.refund_amount_cents)}</div>
+                  ) : null}
+                </td>
                 <td className="px-4 py-3 text-xs">
                   {o.carrier ? <div>{o.carrier} {o.service}</div> : <div className="text-muted-foreground">—</div>}
                   {o.tracking_code && (
