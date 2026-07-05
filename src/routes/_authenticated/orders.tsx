@@ -63,7 +63,7 @@ function OrdersPage() {
               const reviews = ((o as { reviews?: { id: string; listing_id: string; rating: number }[] }).reviews ?? []);
               const reviewByListing = new Map(reviews.map((r) => [r.listing_id, r]));
               const store = (o as { store?: { handle: string; name: string } | null }).store;
-              const canReview = o.status === "paid";
+              const canReview = o.status === "paid" || o.status === "fulfilled";
               return (
                 <li key={o.id} className="overflow-hidden rounded-2xl border bg-card">
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b bg-muted/30 px-5 py-3 text-sm">

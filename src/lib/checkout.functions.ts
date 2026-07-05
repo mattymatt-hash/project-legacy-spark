@@ -284,10 +284,47 @@ export const getStoreOrders = createServerFn({ method: "GET" })
     if (!store) return [];
     const { data, error } = await context.supabase
       .from("orders")
-      .select("id, total_cents, seller_payout_cents, status, buyer_email, shipping_name, created_at, carrier, service, shipping_status, tracking_code, tracking_url, label_url, to_address, order_items(title, quantity)")
+      .select("id, total_cents, seller_payout_cents, status, buyer_email, shipping_name, created_at, carrier, service, shipping_status, tracking_code, tracking_url, label_url, to_address, refunded_at, refund_amount_cents, order_items(title, quantity)")
       .eq("store_id", store.id)
       .order("created_at", { ascending: false })
       .limit(50);
     if (error) throw new Error(error.message);
     return data ?? [];
+  });
+
+export const refundOrder = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: { order_id: string }) =>
+    z.object({ order_id: z.string().uuid() }).parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { userId, supabase } = context;
+    // Verify caller owns the store that owns the order.
+    const { data: order, error } = await supabase
+      .from("orders")
+      .select("id, status, stripe_payment_intent_id, total_cents, store:stores!inner(owner_id)")
+      .eq("id", data.order_id)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!order) throw new Error("Order not found");
+    const owner = (order as { store: { owner_id: string } }).store.owner_id;
+    if (owner !== userId) throw new Error("Not authorized to refund this order");
+    if (order.status === "refunded") throw new Error("Order is already refunded");
+    if (!["paid", "fulfilled"].includes(order.status)) {
+      throw new Error("Only paid or fulfilled orders can be refunded");
+    }
+    if (!order.stripe_payment_intent_id) throw new Error("No payment to refund");
+
+    // Issue the refund — Stripe webhook will finalize order/reviews/stock.
+    await stripeRequest("/refunds", {
+      body: {
+        payment_intent: order.stripe_payment_intent_id,
+        refund_application_fee: true,
+        reverse_transfer: true,
+        metadata: { order_id: order.id },
+      },
+      idempotencyKey: `refund-${order.id}`,
+    });
+
+    return { ok: true };
   });
