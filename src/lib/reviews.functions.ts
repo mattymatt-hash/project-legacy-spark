@@ -142,6 +142,25 @@ export const submitReview = createServerFn({ method: "POST" })
         { onConflict: "order_id,listing_id" },
       );
     if (error) throw new Error(error.message);
+
+    // Notify seller of new review
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: storeRow } = await supabaseAdmin
+        .from("stores").select("owner_id").eq("id", order.store_id).maybeSingle();
+      if (storeRow?.owner_id) {
+        await supabaseAdmin.from("notifications").insert({
+          user_id: storeRow.owner_id,
+          type: "review_received",
+          title: `New ${data.rating}★ review`,
+          body: data.body?.slice(0, 200) ?? "A buyer left a rating on your listing.",
+          link: "/seller",
+          meta: { listing_id: data.listing_id },
+        });
+      }
+    } catch (e) {
+      console.error("[submitReview] notify failed:", e);
+    }
     return { ok: true };
   });
 
