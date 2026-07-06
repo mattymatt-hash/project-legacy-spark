@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "../lib/store/cart";
 import { FavoritesProvider } from "../lib/store/favorites";
+import { ThemeProvider } from "../lib/theme";
 import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
@@ -134,12 +135,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <FavoritesProvider>
-          <Outlet />
-          <Toaster position="top-right" richColors />
-        </FavoritesProvider>
-      </CartProvider>
+      <ThemeProvider>
+        <CartProvider>
+          <FavoritesProvider>
+            <Outlet />
+            <Toaster position="top-right" richColors />
+          </FavoritesProvider>
+        </CartProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

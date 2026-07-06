@@ -1,6 +1,7 @@
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
+import imageCompression from "browser-image-compression";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { createListing, updateListing, deleteListing } from "@/lib/listings.functions";
 import { dollarsToCents, centsToDollarString } from "@/lib/format";
+import { supabase } from "@/integrations/supabase/client";
 
 const CATEGORIES = ["vintage", "handmade", "home", "fashion", "art", "collectibles"] as const;
 const CONDITIONS = [
@@ -62,6 +64,44 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
   const [tagsText, setTagsText] = useState((initial?.tags ?? []).join(", "));
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function onUploadFiles(files: FileList) {
+    setUploading(true);
+    try {
+      const { data: userRes } = await supabase.auth.getUser();
+      const uid = userRes.user?.id;
+      if (!uid) throw new Error("Sign in required");
+      const newUrls: string[] = [];
+      for (const file of Array.from(files).slice(0, 8)) {
+        const compressed = await imageCompression(file, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1600,
+          useWebWorker: true,
+          fileType: "image/jpeg",
+          initialQuality: 0.8,
+        });
+        const path = `${uid}/${crypto.randomUUID()}.jpg`;
+        const { error: upErr } = await supabase.storage
+          .from("listing-images")
+          .upload(path, compressed, { contentType: "image/jpeg" });
+        if (upErr) throw new Error(upErr.message);
+        const { data: signed, error: sErr } = await supabase.storage
+          .from("listing-images")
+          .createSignedUrl(path, 60 * 60 * 24 * 365);
+        if (sErr) throw new Error(sErr.message);
+        newUrls.push(signed.signedUrl);
+      }
+      setImagesText((prev) => (prev ? prev + "\n" : "") + newUrls.join("\n"));
+      toast.success(`Uploaded ${newUrls.length} image${newUrls.length === 1 ? "" : "s"}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -202,9 +242,28 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
       </div>
 
       <Field
-        label="Image URLs"
-        hint="One URL per line. Up to 8. Paste hosted image URLs (e.g. Unsplash, Imgur). Direct upload coming soon."
+        label="Images"
+        hint="Upload files (auto-compressed to 1600px JPEG) or paste hosted URLs, one per line. Up to 8."
       >
+        <div className="mb-2 flex items-center gap-2">
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={(e) => e.target.files && onUploadFiles(e.target.files)}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => fileRef.current?.click()}
+            disabled={uploading}
+          >
+            {uploading ? "Uploading…" : "Upload images"}
+          </Button>
+        </div>
         <Textarea
           rows={4}
           value={imagesText}

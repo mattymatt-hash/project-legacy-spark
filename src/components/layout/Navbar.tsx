@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Heart, ShoppingBag, Search, User, Plus, LogOut, Store, Package } from "lucide-react";
+import { Heart, ShoppingBag, Search, User, Plus, LogOut, Store, Package, Shield } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useFavorites } from "@/lib/store/favorites";
 import { useAuth } from "@/lib/auth/useAuth";
@@ -13,12 +13,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeToggle } from "./ThemeToggle";
+import { NotificationsBell } from "./NotificationsBell";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
+import { isCurrentUserAdmin } from "@/lib/admin.functions";
 
 export function Navbar() {
   const { count } = useCart();
   const { count: favCount } = useFavorites();
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const checkAdmin = useServerFn(isCurrentUserAdmin);
+  const { data: adminData } = useQuery({
+    queryKey: ["admin", "self", user?.id ?? "anon"],
+    queryFn: () => checkAdmin(),
+    enabled: !!user,
+    staleTime: 5 * 60_000,
+  });
+  const isAdmin = adminData?.admin === true;
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
@@ -54,6 +67,8 @@ export function Navbar() {
             <ShoppingBag size={18} />
             {count > 0 && <Badge>{count}</Badge>}
           </Link>
+          <ThemeToggle />
+          {user && <NotificationsBell />}
 
           {loading ? (
             <div className="h-10 w-10" />
@@ -76,6 +91,11 @@ export function Navbar() {
                 <DropdownMenuItem asChild>
                   <Link to="/seller"><Store size={14} className="mr-2" /> Your store</Link>
                 </DropdownMenuItem>
+                {isAdmin && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin"><Shield size={14} className="mr-2" /> Admin</Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onSelect={async () => {
