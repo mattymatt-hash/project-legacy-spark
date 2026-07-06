@@ -24,6 +24,14 @@ export function Navbar() {
   const { count: favCount } = useFavorites();
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const checkAdmin = useServerFn(isCurrentUserAdmin);
+  const { data: adminData } = useQuery({
+    queryKey: ["admin", "self", user?.id ?? "anon"],
+    queryFn: () => checkAdmin(),
+    enabled: !!user,
+    staleTime: 5 * 60_000,
+  });
+  const isAdmin = adminData?.admin === true;
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
