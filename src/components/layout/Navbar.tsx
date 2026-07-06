@@ -67,6 +67,8 @@ export function Navbar() {
             <ShoppingBag size={18} />
             {count > 0 && <Badge>{count}</Badge>}
           </Link>
+          <ThemeToggle />
+          {user && <NotificationsBell />}
 
           {loading ? (
             <div className="h-10 w-10" />
@@ -89,6 +91,11 @@ export function Navbar() {
                 <DropdownMenuItem asChild>
                   <Link to="/seller"><Store size={14} className="mr-2" /> Your store</Link>
                 </DropdownMenuItem>
+                {isAdmin && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin"><Shield size={14} className="mr-2" /> Admin</Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onSelect={async () => {
