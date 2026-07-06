@@ -21,6 +21,7 @@ import { Route as StoreHandleRouteImport } from './routes/store.$handle'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as AuthenticatedSellRouteImport } from './routes/_authenticated/sell'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated/orders'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedSellerIndexRouteImport } from './routes/_authenticated/seller/index'
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
@@ -86,6 +87,11 @@ const AuthenticatedOrdersRoute = AuthenticatedOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   id: '/account',
   path: '/account',
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
   '/account': typeof AuthenticatedAccountRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/order-success': typeof OrderSuccessRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/_authenticated/sell': typeof AuthenticatedSellRoute
   '/product/$id': typeof ProductIdRoute
@@ -182,6 +191,7 @@ export interface FileRouteTypes {
     | '/order-success'
     | '/reset-password'
     | '/account'
+    | '/admin'
     | '/orders'
     | '/sell'
     | '/product/$id'
@@ -200,6 +210,7 @@ export interface FileRouteTypes {
     | '/order-success'
     | '/reset-password'
     | '/account'
+    | '/admin'
     | '/orders'
     | '/sell'
     | '/product/$id'
@@ -219,6 +230,7 @@ export interface FileRouteTypes {
     | '/order-success'
     | '/reset-password'
     | '/_authenticated/account'
+    | '/_authenticated/admin'
     | '/_authenticated/orders'
     | '/_authenticated/sell'
     | '/product/$id'
@@ -329,6 +341,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrdersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/account': {
       id: '/_authenticated/account'
       path: '/account'
@@ -369,6 +388,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedSellRoute: typeof AuthenticatedSellRoute
   AuthenticatedSellerIndexRoute: typeof AuthenticatedSellerIndexRoute
@@ -378,6 +398,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedSellRoute: AuthenticatedSellRoute,
   AuthenticatedSellerIndexRoute: AuthenticatedSellerIndexRoute,

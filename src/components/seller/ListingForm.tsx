@@ -1,6 +1,7 @@
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
+import imageCompression from "browser-image-compression";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { createListing, updateListing, deleteListing } from "@/lib/listings.functions";
 import { dollarsToCents, centsToDollarString } from "@/lib/format";
+import { supabase } from "@/integrations/supabase/client";
 
 const CATEGORIES = ["vintage", "handmade", "home", "fashion", "art", "collectibles"] as const;
 const CONDITIONS = [
