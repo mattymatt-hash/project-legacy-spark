@@ -64,6 +64,44 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
   const [tagsText, setTagsText] = useState((initial?.tags ?? []).join(", "));
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function onUploadFiles(files: FileList) {
+    setUploading(true);
+    try {
+      const { data: userRes } = await supabase.auth.getUser();
+      const uid = userRes.user?.id;
+      if (!uid) throw new Error("Sign in required");
+      const newUrls: string[] = [];
+      for (const file of Array.from(files).slice(0, 8)) {
+        const compressed = await imageCompression(file, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1600,
+          useWebWorker: true,
+          fileType: "image/jpeg",
+          initialQuality: 0.8,
+        });
+        const path = `${uid}/${crypto.randomUUID()}.jpg`;
+        const { error: upErr } = await supabase.storage
+          .from("listing-images")
+          .upload(path, compressed, { contentType: "image/jpeg" });
+        if (upErr) throw new Error(upErr.message);
+        const { data: signed, error: sErr } = await supabase.storage
+          .from("listing-images")
+          .createSignedUrl(path, 60 * 60 * 24 * 365);
+        if (sErr) throw new Error(sErr.message);
+        newUrls.push(signed.signedUrl);
+      }
+      setImagesText((prev) => (prev ? prev + "\n" : "") + newUrls.join("\n"));
+      toast.success(`Uploaded ${newUrls.length} image${newUrls.length === 1 ? "" : "s"}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
