@@ -55,6 +55,20 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               })
               .eq("id", orderId);
 
+            // Notify seller of new paid order
+            const { data: storeRow } = await supabaseAdmin
+              .from("stores").select("owner_id, name").eq("id", order.store_id).maybeSingle();
+            if (storeRow?.owner_id) {
+              await supabaseAdmin.from("notifications").insert({
+                user_id: storeRow.owner_id,
+                type: "order_paid",
+                title: "New order",
+                body: `You've received a new paid order.`,
+                link: "/seller",
+                meta: { order_id: orderId },
+              });
+            }
+
             // Mark sold-out listings
             const { data: items } = await supabaseAdmin
               .from("order_items")
