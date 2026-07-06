@@ -242,9 +242,28 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
       </div>
 
       <Field
-        label="Image URLs"
-        hint="One URL per line. Up to 8. Paste hosted image URLs (e.g. Unsplash, Imgur). Direct upload coming soon."
+        label="Images"
+        hint="Upload files (auto-compressed to 1600px JPEG) or paste hosted URLs, one per line. Up to 8."
       >
+        <div className="mb-2 flex items-center gap-2">
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={(e) => e.target.files && onUploadFiles(e.target.files)}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => fileRef.current?.click()}
+            disabled={uploading}
+          >
+            {uploading ? "Uploading…" : "Upload images"}
+          </Button>
+        </div>
         <Textarea
           rows={4}
           value={imagesText}
