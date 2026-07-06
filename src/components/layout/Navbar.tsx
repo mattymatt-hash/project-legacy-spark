@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Heart, ShoppingBag, Search, User, Plus, LogOut, Store, Package } from "lucide-react";
+import { Heart, ShoppingBag, Search, User, Plus, LogOut, Store, Package, Shield } from "lucide-react";
 import { useCart } from "@/lib/store/cart";
 import { useFavorites } from "@/lib/store/favorites";
 import { useAuth } from "@/lib/auth/useAuth";
@@ -13,6 +13,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeToggle } from "./ThemeToggle";
+import { NotificationsBell } from "./NotificationsBell";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
+import { isCurrentUserAdmin } from "@/lib/admin.functions";
 
 export function Navbar() {
   const { count } = useCart();
