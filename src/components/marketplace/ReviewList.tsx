@@ -67,8 +67,9 @@ function LoadMore({
       <button
         onClick={onClick}
         disabled={loading}
-        className="rounded-full border bg-card px-5 py-2 text-sm font-medium hover:bg-muted disabled:opacity-50"
+        className="inline-flex items-center gap-2 rounded-full border bg-card px-5 py-2 text-sm font-medium hover:bg-muted disabled:opacity-50"
       >
+        {loading && <Loader2 className="animate-spin" size={14} />}
         {loading ? "Loading…" : "Load more"}
       </button>
     </div>
