@@ -80,7 +80,13 @@ function SellerDashboard() {
             <section className="mt-8">
               <h2 className="font-display text-xl font-semibold">Your listings</h2>
               {listingsQ.isLoading ? (
-                <p className="mt-4 text-muted-foreground">Loading…</p>
+                <div className="mt-4 overflow-hidden rounded-2xl border bg-card">
+                  <table className="w-full text-sm">
+                    <tbody>
+                      <TableRowsSkeleton rows={4} cols={5} />
+                    </tbody>
+                  </table>
+                </div>
               ) : !listingsQ.data?.length ? (
                 <div className="mt-4 rounded-2xl border border-dashed bg-card p-10 text-center text-muted-foreground">
                   No listings yet. Add your first item.
