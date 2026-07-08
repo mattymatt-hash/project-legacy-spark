@@ -143,7 +143,7 @@ function ListingsPanel() {
             </tr>
           </thead>
           <tbody>
-            {isLoading && <tr><td className="p-4" colSpan={5}>Loading…</td></tr>}
+            {isLoading && <TableRowsSkeleton rows={4} cols={5} />}
             {rows?.map((r: any) => (
               <tr key={r.id} className="border-t">
                 <td className="p-2">
@@ -209,7 +209,7 @@ function ReviewsPanel() {
           </tr>
         </thead>
         <tbody>
-          {isLoading && <tr><td className="p-4" colSpan={5}>Loading…</td></tr>}
+          {isLoading && <TableRowsSkeleton rows={4} cols={5} />}
           {rows?.map((r: any) => (
             <tr key={r.id} className="border-t">
               <td className="p-2">{"★".repeat(r.rating)}</td>
@@ -270,7 +270,7 @@ function UsersPanel() {
             </tr>
           </thead>
           <tbody>
-            {isLoading && <tr><td className="p-4" colSpan={3}>Loading…</td></tr>}
+            {isLoading && <TableRowsSkeleton rows={4} cols={3} />}
             {rows?.map((r: any) => {
               const isAdmin = r.roles.includes("admin");
               const isMod = r.roles.includes("moderator");
