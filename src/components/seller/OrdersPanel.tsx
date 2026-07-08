@@ -45,7 +45,17 @@ export function OrdersPanel() {
     }
   }
 
-  if (ordersQ.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (ordersQ.isLoading) {
+    return (
+      <div className="overflow-hidden rounded-2xl border bg-card">
+        <table className="w-full text-sm">
+          <tbody>
+            <TableRowsSkeleton rows={3} cols={6} />
+          </tbody>
+        </table>
+      </div>
+    );
+  }
   if (!ordersQ.data?.length) {
     return <div className="rounded-2xl border border-dashed bg-card p-10 text-center text-sm text-muted-foreground">No orders yet.</div>;
   }
