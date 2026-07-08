@@ -75,7 +75,7 @@ export function FromAddressForm() {
         <Field label="ZIP"><Input required value={a.zip} onChange={(e) => setA({ ...a, zip: e.target.value })} /></Field>
         <Field label="Country"><Input required maxLength={2} value={a.country} onChange={(e) => setA({ ...a, country: e.target.value.toUpperCase() })} /></Field>
         <div className="sm:col-span-2">
-          <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save ship-from address"}</Button>
+          <Button type="submit" disabled={saving}>{saving ? <ButtonLoading label="Saving…" /> : "Save ship-from address"}</Button>
         </div>
       </form>
     </div>
