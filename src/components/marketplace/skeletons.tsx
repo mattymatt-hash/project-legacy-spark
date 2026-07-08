@@ -177,10 +177,11 @@ export function ListingFormSkeleton() {
 }
 
 function FieldSkeleton({ lines = 1 }: { lines?: number }) {
+  const height = lines > 3 ? "h-28" : lines > 1 ? "h-20" : "h-9";
   return (
     <div>
       <Skeleton className="mb-2 h-3 w-20" />
-      <Skeleton className={lines > 1 ? `h-${Math.min(28, lines * 6)} w-full` : "h-9 w-full"} />
+      <Skeleton className={`${height} w-full`} />
     </div>
   );
 }
