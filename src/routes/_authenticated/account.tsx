@@ -143,7 +143,7 @@ function AccountPage() {
             <Label htmlFor="dn">Display name</Label>
             <Input id="dn" required value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
           </div>
-          <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save changes"}</Button>
+          <Button type="submit" disabled={saving}>{saving ? <ButtonLoading label="Saving…" /> : "Save changes"}</Button>
         </form>
       </main>
       <Footer />
