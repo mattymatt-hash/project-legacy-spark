@@ -52,7 +52,9 @@ function OrdersPage() {
         </div>
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <ul className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => <OrderCardSkeleton key={i} />)}
+          </ul>
         ) : error ? (
           <p className="text-sm text-destructive">{(error as Error).message}</p>
         ) : !data?.length ? (
