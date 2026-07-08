@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { CheckCircle2, AlertCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ButtonLoading } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { getConnectStatus, createConnectOnboardingLink } from "@/lib/checkout.functions";
 
