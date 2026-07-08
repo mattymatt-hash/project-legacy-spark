@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { StarRow } from "./StarRating";
+import { ReviewListSkeleton } from "./skeletons";
 import { getListingReviews, getStoreReviews, type ReviewSort } from "@/lib/reviews.functions";
 import {
   Select,
@@ -66,8 +68,9 @@ function LoadMore({
       <button
         onClick={onClick}
         disabled={loading}
-        className="rounded-full border bg-card px-5 py-2 text-sm font-medium hover:bg-muted disabled:opacity-50"
+        className="inline-flex items-center gap-2 rounded-full border bg-card px-5 py-2 text-sm font-medium hover:bg-muted disabled:opacity-50"
       >
+        {loading && <Loader2 className="animate-spin" size={14} />}
         {loading ? "Loading…" : "Load more"}
       </button>
     </div>
@@ -85,7 +88,7 @@ export function ListingReviews({ listingId }: { listingId: string }) {
     getNextPageParam: (last) => (last.nextOffset < last.total ? last.nextOffset : undefined),
   });
 
-  if (q.isLoading) return <p className="text-sm text-muted-foreground">Loading reviews…</p>;
+  if (q.isLoading) return <ReviewListSkeleton />;
   const total = q.data?.pages[0]?.total ?? 0;
   const items = q.data?.pages.flatMap((p) => p.items) ?? [];
 
@@ -143,7 +146,7 @@ export function StoreReviews({ handle }: { handle: string }) {
     getNextPageParam: (last) => (last.nextOffset < last.total ? last.nextOffset : undefined),
   });
 
-  if (q.isLoading) return <p className="text-sm text-muted-foreground">Loading reviews…</p>;
+  if (q.isLoading) return <ReviewListSkeleton />;
   const total = q.data?.pages[0]?.total ?? 0;
   const items = q.data?.pages.flatMap((p) => p.items) ?? [];
 

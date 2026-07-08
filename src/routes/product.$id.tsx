@@ -7,6 +7,7 @@ import { PriceTag } from "@/components/marketplace/PriceTag";
 import { ListingCard } from "@/components/marketplace/ListingCard";
 import { StarRow } from "@/components/marketplace/StarRating";
 import { ListingReviews } from "@/components/marketplace/ReviewList";
+import { ProductPageSkeleton } from "@/components/marketplace/skeletons";
 import { getListingById, getActiveListings } from "@/lib/listings.functions";
 import { useCart } from "@/lib/store/cart";
 import { useFavorites } from "@/lib/store/favorites";
@@ -65,6 +66,13 @@ export const Route = createFileRoute("/product/$id")({
         <button onClick={reset} className="mt-4 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">
           Try again
         </button>
+      </div>
+    </SiteShell>
+  ),
+  pendingComponent: () => (
+    <SiteShell>
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <ProductPageSkeleton />
       </div>
     </SiteShell>
   ),

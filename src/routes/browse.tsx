@@ -4,6 +4,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { ListingCard } from "@/components/marketplace/ListingCard";
+import { ListingGrid as ListingGridSkeleton } from "@/components/marketplace/skeletons";
 import { getActiveListings } from "@/lib/listings.functions";
 import { categories } from "@/lib/mock/data";
 
@@ -41,6 +42,27 @@ export const Route = createFileRoute("/browse")({
     </SiteShell>
   ),
   notFoundComponent: () => <SiteShell><div className="p-12 text-center">Not found</div></SiteShell>,
+  pendingComponent: () => (
+    <SiteShell>
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <div className="mb-6 space-y-2">
+          <div className="h-10 w-56 animate-pulse rounded bg-muted" />
+          <div className="h-4 w-72 animate-pulse rounded bg-muted" />
+        </div>
+        <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
+          <div className="hidden lg:block">
+            <div className="h-4 w-24 animate-pulse rounded bg-muted" />
+            <div className="mt-3 space-y-2">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-4 w-32 animate-pulse rounded bg-muted" />
+              ))}
+            </div>
+          </div>
+          <ListingGridSkeleton count={12} />
+        </div>
+      </div>
+    </SiteShell>
+  ),
   component: BrowsePage,
 });
 

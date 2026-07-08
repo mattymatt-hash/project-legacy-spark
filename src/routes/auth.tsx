@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Navbar } from "@/components/layout/Navbar";
+import { ButtonLoading } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
@@ -90,7 +91,7 @@ function GoogleButton() {
         window.location.href = "/";
       }}
     >
-      {loading ? "Redirecting…" : "Continue with Google"}
+      {loading ? <ButtonLoading label="Redirecting…" /> : "Continue with Google"}
     </Button>
   );
 }
@@ -128,7 +129,7 @@ function SignInForm() {
         <Input id="si-pw" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
       <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "Signing in…" : "Sign in"}
+        {loading ? <ButtonLoading label="Signing in…" /> : "Sign in"}
       </Button>
     </form>
   );
@@ -165,7 +166,7 @@ function SignUpForm() {
         <p className="mt-1 text-xs text-muted-foreground">At least 6 characters.</p>
       </div>
       <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "Creating account…" : "Create account"}
+        {loading ? <ButtonLoading label="Creating account…" /> : "Create account"}
       </Button>
     </form>
   );

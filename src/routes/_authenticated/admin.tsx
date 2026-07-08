@@ -19,6 +19,8 @@ import {
   adminSetUserRole,
 } from "@/lib/admin.functions";
 import { formatPrice } from "@/lib/format";
+import { Skeleton } from "@/components/ui/skeleton";
+import { TableRowsSkeleton } from "@/components/marketplace/skeletons";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Admin — NoBS Market" }, { name: "robots", content: "noindex" }] }),
@@ -39,7 +41,12 @@ function AdminPage() {
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
-        <p className="p-8 text-sm text-muted-foreground">Checking access…</p>
+        <main className="mx-auto max-w-6xl px-4 py-8 space-y-4">
+          <Skeleton className="h-9 w-64" />
+          <Skeleton className="h-4 w-80" />
+          <Skeleton className="h-10 w-72" />
+          <Skeleton className="h-64 w-full rounded-lg" />
+        </main>
       </div>
     );
   }
@@ -136,7 +143,7 @@ function ListingsPanel() {
             </tr>
           </thead>
           <tbody>
-            {isLoading && <tr><td className="p-4" colSpan={5}>Loading…</td></tr>}
+            {isLoading && <TableRowsSkeleton rows={4} cols={5} />}
             {rows?.map((r: any) => (
               <tr key={r.id} className="border-t">
                 <td className="p-2">
@@ -202,7 +209,7 @@ function ReviewsPanel() {
           </tr>
         </thead>
         <tbody>
-          {isLoading && <tr><td className="p-4" colSpan={5}>Loading…</td></tr>}
+          {isLoading && <TableRowsSkeleton rows={4} cols={5} />}
           {rows?.map((r: any) => (
             <tr key={r.id} className="border-t">
               <td className="p-2">{"★".repeat(r.rating)}</td>
@@ -263,7 +270,7 @@ function UsersPanel() {
             </tr>
           </thead>
           <tbody>
-            {isLoading && <tr><td className="p-4" colSpan={3}>Loading…</td></tr>}
+            {isLoading && <TableRowsSkeleton rows={4} cols={3} />}
             {rows?.map((r: any) => {
               const isAdmin = r.roles.includes("admin");
               const isMod = r.roles.includes("moderator");

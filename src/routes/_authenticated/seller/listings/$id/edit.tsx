@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ListingForm } from "@/components/seller/ListingForm";
+import { ListingFormSkeleton } from "@/components/marketplace/skeletons";
 import { getMyListing } from "@/lib/listings.functions";
 import { ArrowLeft } from "lucide-react";
 
@@ -29,7 +30,7 @@ function EditListing() {
         </Link>
         <h1 className="font-display text-3xl font-bold">Edit listing</h1>
         {isLoading ? (
-          <p className="mt-6 text-muted-foreground">Loading…</p>
+          <div className="mt-8"><ListingFormSkeleton /></div>
         ) : error ? (
           <p className="mt-6 text-sm text-destructive">{(error as Error).message}</p>
         ) : !data ? (

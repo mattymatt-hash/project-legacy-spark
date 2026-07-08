@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { AccountSkeleton } from "@/components/marketplace/skeletons";
+import { ButtonLoading } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/account")({
@@ -76,7 +78,16 @@ function AccountPage() {
     }
   }
 
-  if (loading) return <div className="min-h-screen bg-background"><Navbar /><p className="p-8">Loading…</p></div>;
+  if (loading)
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="mx-auto max-w-2xl px-4 py-10">
+          <AccountSkeleton />
+        </main>
+        <Footer />
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-background">
@@ -107,7 +118,7 @@ function AccountPage() {
               onClick={() => fileRef.current?.click()}
               disabled={uploading}
             >
-              {uploading ? "Uploading…" : "Upload new avatar"}
+              {uploading ? <ButtonLoading label="Uploading…" /> : "Upload new avatar"}
             </Button>
             <p className="text-xs text-muted-foreground">JPG or PNG. Resized to 1600px automatically.</p>
           </div>
@@ -132,7 +143,7 @@ function AccountPage() {
             <Label htmlFor="dn">Display name</Label>
             <Input id="dn" required value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
           </div>
-          <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save changes"}</Button>
+          <Button type="submit" disabled={saving}>{saving ? <ButtonLoading label="Saving…" /> : "Save changes"}</Button>
         </form>
       </main>
       <Footer />

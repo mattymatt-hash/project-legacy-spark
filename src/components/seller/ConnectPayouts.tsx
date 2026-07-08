@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { CheckCircle2, AlertCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ButtonLoading } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { getConnectStatus, createConnectOnboardingLink } from "@/lib/checkout.functions";
 
@@ -28,7 +29,18 @@ export function ConnectPayouts() {
   }
 
   if (isLoading) {
-    return <div className="rounded-2xl border bg-card p-5 text-sm text-muted-foreground">Loading payout status…</div>;
+    return (
+      <div className="rounded-2xl border bg-card p-5">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 h-5 w-5 animate-pulse rounded-full bg-muted" />
+          <div className="flex-1 space-y-2">
+            <div className="h-4 w-40 animate-pulse rounded bg-muted" />
+            <div className="h-3 w-full animate-pulse rounded bg-muted" />
+          </div>
+          <div className="h-8 w-28 animate-pulse rounded-md bg-muted" />
+        </div>
+      </div>
+    );
   }
   if (!data || !data.hasStore) return null;
 
@@ -60,7 +72,7 @@ export function ConnectPayouts() {
           )}
         </div>
         <Button onClick={onConnect} disabled={starting} variant={ready ? "outline" : "default"} size="sm">
-          {starting ? "Opening…" : ready ? "Manage" : pending ? "Finish setup" : "Connect Stripe"}
+          {starting ? <ButtonLoading label="Opening…" /> : ready ? "Manage" : pending ? "Finish setup" : "Connect Stripe"}
           <ExternalLink size={14} />
         </Button>
       </div>

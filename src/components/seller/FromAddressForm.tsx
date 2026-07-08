@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ButtonLoading } from "@/components/ui/spinner";
 import { getMyStore } from "@/lib/stores.functions";
 import { updateStoreFromAddress } from "@/lib/shipping.functions";
 
@@ -30,7 +32,18 @@ export function FromAddressForm() {
   );
   const [saving, setSaving] = useState(false);
 
-  if (storeQ.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (storeQ.isLoading) {
+    return (
+      <div className="rounded-2xl border bg-card p-6 space-y-3">
+        <Skeleton className="h-5 w-40" />
+        <Skeleton className="h-3 w-full" />
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="h-9 w-full" />)}
+        </div>
+        <Skeleton className="h-10 w-48" />
+      </div>
+    );
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -62,7 +75,7 @@ export function FromAddressForm() {
         <Field label="ZIP"><Input required value={a.zip} onChange={(e) => setA({ ...a, zip: e.target.value })} /></Field>
         <Field label="Country"><Input required maxLength={2} value={a.country} onChange={(e) => setA({ ...a, country: e.target.value.toUpperCase() })} /></Field>
         <div className="sm:col-span-2">
-          <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save ship-from address"}</Button>
+          <Button type="submit" disabled={saving}>{saving ? <ButtonLoading label="Saving…" /> : "Save ship-from address"}</Button>
         </div>
       </form>
     </div>

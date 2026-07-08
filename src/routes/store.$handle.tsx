@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { StarRow } from "@/components/marketplace/StarRating";
 import { StoreReviews } from "@/components/marketplace/ReviewList";
+import { StorePageSkeleton } from "@/components/marketplace/skeletons";
 
 const storeQuery = (handle: string) =>
   queryOptions({
@@ -60,6 +61,15 @@ export const Route = createFileRoute("/store/$handle")({
         <h1 className="font-display text-2xl font-bold">Could not load store</h1>
         <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
       </main>
+    </div>
+  ),
+  pendingComponent: () => (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main className="mx-auto max-w-6xl px-4 py-10">
+        <StorePageSkeleton />
+      </main>
+      <Footer />
     </div>
   ),
   component: StorePage,

@@ -9,6 +9,8 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { ConnectPayouts } from "@/components/seller/ConnectPayouts";
 import { OrdersPanel } from "@/components/seller/OrdersPanel";
+import { TableRowsSkeleton } from "@/components/marketplace/skeletons";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatPrice } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/seller/")({
@@ -32,7 +34,19 @@ function SellerDashboard() {
       <Navbar />
       <main className="mx-auto max-w-5xl px-4 py-10">
         {storeQ.isLoading ? (
-          <p className="text-muted-foreground">Loading…</p>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <Skeleton className="h-9 w-64" />
+              <Skeleton className="h-4 w-48" />
+            </div>
+            <Skeleton className="h-24 w-full rounded-2xl" />
+            <div className="space-y-3">
+              <Skeleton className="h-6 w-32" />
+              <div className="rounded-2xl border bg-card p-4 space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-10 w-full" />)}
+              </div>
+            </div>
+          </div>
         ) : !storeQ.data ? (
           <div className="rounded-2xl border bg-card p-10 text-center">
             <h1 className="font-display text-2xl font-bold">Open a store first</h1>
@@ -66,7 +80,13 @@ function SellerDashboard() {
             <section className="mt-8">
               <h2 className="font-display text-xl font-semibold">Your listings</h2>
               {listingsQ.isLoading ? (
-                <p className="mt-4 text-muted-foreground">Loading…</p>
+                <div className="mt-4 overflow-hidden rounded-2xl border bg-card">
+                  <table className="w-full text-sm">
+                    <tbody>
+                      <TableRowsSkeleton rows={4} cols={5} />
+                    </tbody>
+                  </table>
+                </div>
               ) : !listingsQ.data?.length ? (
                 <div className="mt-4 rounded-2xl border border-dashed bg-card p-10 text-center text-muted-foreground">
                   No listings yet. Add your first item.

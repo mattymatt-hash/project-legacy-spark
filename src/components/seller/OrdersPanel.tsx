@@ -3,6 +3,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { ButtonLoading } from "@/components/ui/spinner";
+import { TableRowsSkeleton } from "@/components/marketplace/skeletons";
 import { getStoreOrders, refundOrder } from "@/lib/checkout.functions";
 import { buyShippingLabel } from "@/lib/shipping.functions";
 import { formatPrice } from "@/lib/format";
@@ -43,7 +45,17 @@ export function OrdersPanel() {
     }
   }
 
-  if (ordersQ.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (ordersQ.isLoading) {
+    return (
+      <div className="overflow-hidden rounded-2xl border bg-card">
+        <table className="w-full text-sm">
+          <tbody>
+            <TableRowsSkeleton rows={3} cols={6} />
+          </tbody>
+        </table>
+      </div>
+    );
+  }
   if (!ordersQ.data?.length) {
     return <div className="rounded-2xl border border-dashed bg-card p-10 text-center text-sm text-muted-foreground">No orders yet.</div>;
   }
@@ -100,14 +112,14 @@ export function OrdersPanel() {
                   <div className="flex flex-col items-end gap-1">
                     {canBuy ? (
                       <Button size="sm" disabled={busy === o.id} onClick={() => onBuyLabel(o.id)}>
-                        {busy === o.id ? "Buying…" : "Buy label"}
+                        {busy === o.id ? <ButtonLoading label="Buying…" /> : "Buy label"}
                       </Button>
                     ) : o.label_url ? (
                       <a href={o.label_url} target="_blank" rel="noreferrer" className="text-sm underline">View label</a>
                     ) : null}
                     {canRefund && (
                       <Button size="sm" variant="outline" disabled={refunding === o.id} onClick={() => onRefund(o.id)}>
-                        {refunding === o.id ? "Refunding…" : "Refund"}
+                        {refunding === o.id ? <ButtonLoading label="Refunding…" /> : "Refund"}
                       </Button>
                     )}
                   </div>

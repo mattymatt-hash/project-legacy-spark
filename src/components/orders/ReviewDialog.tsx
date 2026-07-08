@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ButtonLoading } from "@/components/ui/spinner";
 import { StarInput } from "@/components/marketplace/StarRating";
 import { submitReview } from "@/lib/reviews.functions";
 
@@ -85,7 +86,7 @@ export function ReviewDialog({
             Cancel
           </Button>
           <Button onClick={onSubmit} disabled={saving}>
-            {saving ? "Submitting…" : "Submit review"}
+            {saving ? <ButtonLoading label="Submitting…" /> : "Submit review"}
           </Button>
         </DialogFooter>
       </DialogContent>

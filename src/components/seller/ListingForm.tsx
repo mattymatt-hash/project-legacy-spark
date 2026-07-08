@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ButtonLoading } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { createListing, updateListing, deleteListing } from "@/lib/listings.functions";
 import { dollarsToCents, centsToDollarString } from "@/lib/format";
@@ -261,7 +262,7 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
           >
-            {uploading ? "Uploading…" : "Upload images"}
+            {uploading ? <ButtonLoading label="Uploading…" /> : "Upload images"}
           </Button>
         </div>
         <Textarea
@@ -278,11 +279,11 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
 
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={saving}>
-          {saving ? "Saving…" : mode === "create" ? "Create listing" : "Save changes"}
+          {saving ? <ButtonLoading label="Saving…" /> : mode === "create" ? "Create listing" : "Save changes"}
         </Button>
         {mode === "edit" && (
           <Button type="button" variant="destructive" onClick={onDelete} disabled={deleting}>
-            {deleting ? "Deleting…" : "Delete"}
+            {deleting ? <ButtonLoading label="Deleting…" /> : "Delete"}
           </Button>
         )}
       </div>

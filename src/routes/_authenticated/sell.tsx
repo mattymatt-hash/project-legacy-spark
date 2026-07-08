@@ -11,6 +11,8 @@ import { Footer } from "@/components/layout/Footer";
 import { toast } from "sonner";
 import { ConnectPayouts } from "@/components/seller/ConnectPayouts";
 import { FromAddressForm } from "@/components/seller/FromAddressForm";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ButtonLoading } from "@/components/ui/spinner";
 
 export const Route = createFileRoute("/_authenticated/sell")({
   head: () => ({ meta: [{ title: "Open your store — NoBS Market" }] }),
@@ -36,7 +38,19 @@ function SellPage() {
     });
   }, [loadStore]);
 
-  if (checking) return <Shell><p>Loading…</p></Shell>;
+  if (checking)
+    return (
+      <Shell>
+        <Skeleton className="h-9 w-64" />
+        <Skeleton className="mt-3 h-4 w-96" />
+        <div className="mt-8 space-y-4">
+          <Skeleton className="h-9 w-full" />
+          <Skeleton className="h-9 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-10 w-32" />
+        </div>
+      </Shell>
+    );
 
   if (existing) {
     return (
@@ -103,7 +117,7 @@ function SellPage() {
           <Label htmlFor="bio">Bio (optional)</Label>
           <Textarea id="bio" maxLength={500} rows={4} value={bio} onChange={(e) => setBio(e.target.value)} />
         </div>
-        <Button type="submit" disabled={saving}>{saving ? "Creating…" : "Open store"}</Button>
+        <Button type="submit" disabled={saving}>{saving ? <ButtonLoading label="Creating…" /> : "Open store"}</Button>
       </form>
     </Shell>
   );

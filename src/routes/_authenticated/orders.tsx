@@ -7,6 +7,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { ReviewDialog } from "@/components/orders/ReviewDialog";
+import { OrderCardSkeleton } from "@/components/marketplace/skeletons";
 import { getMyOrders } from "@/lib/checkout.functions";
 import { formatPrice } from "@/lib/format";
 
@@ -51,7 +52,9 @@ function OrdersPage() {
         </div>
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <ul className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => <OrderCardSkeleton key={i} />)}
+          </ul>
         ) : error ? (
           <p className="text-sm text-destructive">{(error as Error).message}</p>
         ) : !data?.length ? (
