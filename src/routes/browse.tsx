@@ -4,6 +4,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { ListingCard } from "@/components/marketplace/ListingCard";
+import { ListingGrid as ListingGridSkeleton } from "@/components/marketplace/skeletons";
 import { getActiveListings } from "@/lib/listings.functions";
 import { categories } from "@/lib/mock/data";
 
