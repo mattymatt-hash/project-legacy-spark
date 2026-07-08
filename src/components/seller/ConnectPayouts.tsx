@@ -72,7 +72,7 @@ export function ConnectPayouts() {
           )}
         </div>
         <Button onClick={onConnect} disabled={starting} variant={ready ? "outline" : "default"} size="sm">
-          {starting ? "Opening…" : ready ? "Manage" : pending ? "Finish setup" : "Connect Stripe"}
+          {starting ? <ButtonLoading label="Opening…" /> : ready ? "Manage" : pending ? "Finish setup" : "Connect Stripe"}
           <ExternalLink size={14} />
         </Button>
       </div>
