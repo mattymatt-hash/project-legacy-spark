@@ -63,6 +63,15 @@ export const Route = createFileRoute("/store/$handle")({
       </main>
     </div>
   ),
+  pendingComponent: () => (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main className="mx-auto max-w-6xl px-4 py-10">
+        <StorePageSkeleton />
+      </main>
+      <Footer />
+    </div>
+  ),
   component: StorePage,
 });
 
