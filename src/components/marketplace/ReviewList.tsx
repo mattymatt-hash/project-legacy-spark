@@ -86,7 +86,7 @@ export function ListingReviews({ listingId }: { listingId: string }) {
     getNextPageParam: (last) => (last.nextOffset < last.total ? last.nextOffset : undefined),
   });
 
-  if (q.isLoading) return <p className="text-sm text-muted-foreground">Loading reviews…</p>;
+  if (q.isLoading) return <ReviewListSkeleton />;
   const total = q.data?.pages[0]?.total ?? 0;
   const items = q.data?.pages.flatMap((p) => p.items) ?? [];
 
@@ -144,7 +144,7 @@ export function StoreReviews({ handle }: { handle: string }) {
     getNextPageParam: (last) => (last.nextOffset < last.total ? last.nextOffset : undefined),
   });
 
-  if (q.isLoading) return <p className="text-sm text-muted-foreground">Loading reviews…</p>;
+  if (q.isLoading) return <ReviewListSkeleton />;
   const total = q.data?.pages[0]?.total ?? 0;
   const items = q.data?.pages.flatMap((p) => p.items) ?? [];
 
