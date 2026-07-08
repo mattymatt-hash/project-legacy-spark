@@ -262,7 +262,7 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
           >
-            {uploading ? "Uploading…" : "Upload images"}
+            {uploading ? <ButtonLoading label="Uploading…" /> : "Upload images"}
           </Button>
         </div>
         <Textarea
@@ -279,11 +279,11 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
 
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={saving}>
-          {saving ? "Saving…" : mode === "create" ? "Create listing" : "Save changes"}
+          {saving ? <ButtonLoading label="Saving…" /> : mode === "create" ? "Create listing" : "Save changes"}
         </Button>
         {mode === "edit" && (
           <Button type="button" variant="destructive" onClick={onDelete} disabled={deleting}>
-            {deleting ? "Deleting…" : "Delete"}
+            {deleting ? <ButtonLoading label="Deleting…" /> : "Delete"}
           </Button>
         )}
       </div>
