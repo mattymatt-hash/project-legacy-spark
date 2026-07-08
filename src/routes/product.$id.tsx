@@ -69,6 +69,13 @@ export const Route = createFileRoute("/product/$id")({
       </div>
     </SiteShell>
   ),
+  pendingComponent: () => (
+    <SiteShell>
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <ProductPageSkeleton />
+      </div>
+    </SiteShell>
+  ),
   component: ProductPage,
 });
 
