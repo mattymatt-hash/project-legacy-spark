@@ -118,7 +118,7 @@ function AccountPage() {
               onClick={() => fileRef.current?.click()}
               disabled={uploading}
             >
-              {uploading ? "Uploading…" : "Upload new avatar"}
+              {uploading ? <ButtonLoading label="Uploading…" /> : "Upload new avatar"}
             </Button>
             <p className="text-xs text-muted-foreground">JPG or PNG. Resized to 1600px automatically.</p>
           </div>
