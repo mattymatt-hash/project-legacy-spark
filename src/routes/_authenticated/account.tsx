@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { AccountSkeleton } from "@/components/marketplace/skeletons";
+import { ButtonLoading } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/account")({
