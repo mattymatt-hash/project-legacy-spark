@@ -7,6 +7,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { ReviewDialog } from "@/components/orders/ReviewDialog";
+import { OrderCardSkeleton } from "@/components/marketplace/skeletons";
 import { getMyOrders } from "@/lib/checkout.functions";
 import { formatPrice } from "@/lib/format";
 
