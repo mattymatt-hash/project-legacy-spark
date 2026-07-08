@@ -34,7 +34,19 @@ function SellerDashboard() {
       <Navbar />
       <main className="mx-auto max-w-5xl px-4 py-10">
         {storeQ.isLoading ? (
-          <p className="text-muted-foreground">Loading…</p>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <Skeleton className="h-9 w-64" />
+              <Skeleton className="h-4 w-48" />
+            </div>
+            <Skeleton className="h-24 w-full rounded-2xl" />
+            <div className="space-y-3">
+              <Skeleton className="h-6 w-32" />
+              <div className="rounded-2xl border bg-card p-4 space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-10 w-full" />)}
+              </div>
+            </div>
+          </div>
         ) : !storeQ.data ? (
           <div className="rounded-2xl border bg-card p-10 text-center">
             <h1 className="font-display text-2xl font-bold">Open a store first</h1>
