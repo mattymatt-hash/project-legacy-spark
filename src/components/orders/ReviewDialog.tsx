@@ -86,7 +86,7 @@ export function ReviewDialog({
             Cancel
           </Button>
           <Button onClick={onSubmit} disabled={saving}>
-            {saving ? "Submitting…" : "Submit review"}
+            {saving ? <ButtonLoading label="Submitting…" /> : "Submit review"}
           </Button>
         </DialogFooter>
       </DialogContent>
