@@ -112,14 +112,14 @@ export function OrdersPanel() {
                   <div className="flex flex-col items-end gap-1">
                     {canBuy ? (
                       <Button size="sm" disabled={busy === o.id} onClick={() => onBuyLabel(o.id)}>
-                        {busy === o.id ? "Buying…" : "Buy label"}
+                        {busy === o.id ? <ButtonLoading label="Buying…" /> : "Buy label"}
                       </Button>
                     ) : o.label_url ? (
                       <a href={o.label_url} target="_blank" rel="noreferrer" className="text-sm underline">View label</a>
                     ) : null}
                     {canRefund && (
                       <Button size="sm" variant="outline" disabled={refunding === o.id} onClick={() => onRefund(o.id)}>
-                        {refunding === o.id ? "Refunding…" : "Refund"}
+                        {refunding === o.id ? <ButtonLoading label="Refunding…" /> : "Refund"}
                       </Button>
                     )}
                   </div>
