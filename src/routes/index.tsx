@@ -32,6 +32,35 @@ export const Route = createFileRoute("/")({
     </SiteShell>
   ),
   notFoundComponent: () => <SiteShell><div className="p-12 text-center">Not found</div></SiteShell>,
+  pendingComponent: () => (
+    <SiteShell>
+      <section className="border-b">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 md:grid-cols-2 md:items-center md:py-20">
+          <div className="space-y-5">
+            <div className="h-6 w-40 animate-pulse rounded-full bg-muted" />
+            <div className="h-14 w-11/12 animate-pulse rounded-md bg-muted" />
+            <div className="h-14 w-3/4 animate-pulse rounded-md bg-muted" />
+            <div className="h-4 w-full animate-pulse rounded bg-muted" />
+            <div className="flex gap-3">
+              <div className="h-11 w-40 animate-pulse rounded-full bg-muted" />
+              <div className="h-11 w-32 animate-pulse rounded-full bg-muted" />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} className={`aspect-[3/4] w-full animate-pulse rounded-2xl bg-muted ${i % 2 ? "mt-8" : ""}`} />
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+        <div className="h-8 w-56 animate-pulse rounded bg-muted" />
+        <div className="mt-6">
+          <ListingGridSkeleton count={8} />
+        </div>
+      </section>
+    </SiteShell>
+  ),
   component: Index,
 });
 
