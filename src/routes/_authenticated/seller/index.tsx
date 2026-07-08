@@ -9,6 +9,8 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { ConnectPayouts } from "@/components/seller/ConnectPayouts";
 import { OrdersPanel } from "@/components/seller/OrdersPanel";
+import { TableRowsSkeleton } from "@/components/marketplace/skeletons";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatPrice } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/seller/")({
