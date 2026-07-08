@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { StarRow } from "./StarRating";
 import { ReviewListSkeleton } from "./skeletons";
 import { getListingReviews, getStoreReviews, type ReviewSort } from "@/lib/reviews.functions";
