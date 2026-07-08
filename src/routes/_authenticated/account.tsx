@@ -78,7 +78,16 @@ function AccountPage() {
     }
   }
 
-  if (loading) return <div className="min-h-screen bg-background"><Navbar /><p className="p-8">Loading…</p></div>;
+  if (loading)
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="mx-auto max-w-2xl px-4 py-10">
+          <AccountSkeleton />
+        </main>
+        <Footer />
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-background">
