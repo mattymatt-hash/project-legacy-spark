@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ListingForm } from "@/components/seller/ListingForm";
+import { ListingFormSkeleton } from "@/components/marketplace/skeletons";
 import { getMyListing } from "@/lib/listings.functions";
 import { ArrowLeft } from "lucide-react";
 
