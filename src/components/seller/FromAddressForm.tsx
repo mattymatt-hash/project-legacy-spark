@@ -32,7 +32,18 @@ export function FromAddressForm() {
   );
   const [saving, setSaving] = useState(false);
 
-  if (storeQ.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (storeQ.isLoading) {
+    return (
+      <div className="rounded-2xl border bg-card p-6 space-y-3">
+        <Skeleton className="h-5 w-40" />
+        <Skeleton className="h-3 w-full" />
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="h-9 w-full" />)}
+        </div>
+        <Skeleton className="h-10 w-48" />
+      </div>
+    );
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
