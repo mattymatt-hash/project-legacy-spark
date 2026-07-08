@@ -19,6 +19,8 @@ import {
   adminSetUserRole,
 } from "@/lib/admin.functions";
 import { formatPrice } from "@/lib/format";
+import { Skeleton } from "@/components/ui/skeleton";
+import { TableRowsSkeleton } from "@/components/marketplace/skeletons";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Admin — NoBS Market" }, { name: "robots", content: "noindex" }] }),
