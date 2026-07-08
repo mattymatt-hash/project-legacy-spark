@@ -41,7 +41,12 @@ function AdminPage() {
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
-        <p className="p-8 text-sm text-muted-foreground">Checking access…</p>
+        <main className="mx-auto max-w-6xl px-4 py-8 space-y-4">
+          <Skeleton className="h-9 w-64" />
+          <Skeleton className="h-4 w-80" />
+          <Skeleton className="h-10 w-72" />
+          <Skeleton className="h-64 w-full rounded-lg" />
+        </main>
       </div>
     );
   }
