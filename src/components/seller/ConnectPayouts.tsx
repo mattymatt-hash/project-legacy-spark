@@ -28,7 +28,18 @@ export function ConnectPayouts() {
   }
 
   if (isLoading) {
-    return <div className="rounded-2xl border bg-card p-5 text-sm text-muted-foreground">Loading payout status…</div>;
+    return (
+      <div className="rounded-2xl border bg-card p-5">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 h-5 w-5 animate-pulse rounded-full bg-muted" />
+          <div className="flex-1 space-y-2">
+            <div className="h-4 w-40 animate-pulse rounded bg-muted" />
+            <div className="h-3 w-full animate-pulse rounded bg-muted" />
+          </div>
+          <div className="h-8 w-28 animate-pulse rounded-md bg-muted" />
+        </div>
+      </div>
+    );
   }
   if (!data || !data.hasStore) return null;
 
