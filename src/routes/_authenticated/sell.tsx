@@ -117,7 +117,7 @@ function SellPage() {
           <Label htmlFor="bio">Bio (optional)</Label>
           <Textarea id="bio" maxLength={500} rows={4} value={bio} onChange={(e) => setBio(e.target.value)} />
         </div>
-        <Button type="submit" disabled={saving}>{saving ? "Creating…" : "Open store"}</Button>
+        <Button type="submit" disabled={saving}>{saving ? <ButtonLoading label="Creating…" /> : "Open store"}</Button>
       </form>
     </Shell>
   );
