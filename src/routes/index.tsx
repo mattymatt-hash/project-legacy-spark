@@ -3,6 +3,7 @@ import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { CategoryTile } from "@/components/marketplace/CategoryTile";
 import { ListingCard } from "@/components/marketplace/ListingCard";
+import { ListingGrid as ListingGridSkeleton } from "@/components/marketplace/skeletons";
 import { getActiveListings } from "@/lib/listings.functions";
 import { categories } from "@/lib/mock/data";
 import { ArrowRight } from "lucide-react";
