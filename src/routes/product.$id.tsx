@@ -7,6 +7,7 @@ import { PriceTag } from "@/components/marketplace/PriceTag";
 import { ListingCard } from "@/components/marketplace/ListingCard";
 import { StarRow } from "@/components/marketplace/StarRating";
 import { ListingReviews } from "@/components/marketplace/ReviewList";
+import { RatingSummary } from "@/components/marketplace/RatingSummary";
 import { ProductPageSkeleton } from "@/components/marketplace/skeletons";
 import { getListingById, getActiveListings } from "@/lib/listings.functions";
 import { useCart } from "@/lib/store/cart";
