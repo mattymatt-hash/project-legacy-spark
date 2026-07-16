@@ -7,6 +7,7 @@ import { PriceTag } from "@/components/marketplace/PriceTag";
 import { ListingCard } from "@/components/marketplace/ListingCard";
 import { StarRow } from "@/components/marketplace/StarRating";
 import { ListingReviews } from "@/components/marketplace/ReviewList";
+import { RatingSummary } from "@/components/marketplace/RatingSummary";
 import { ProductPageSkeleton } from "@/components/marketplace/skeletons";
 import { getListingById, getActiveListings } from "@/lib/listings.functions";
 import { useCart } from "@/lib/store/cart";
@@ -206,9 +207,13 @@ function ProductPage() {
         <section className="mt-16">
           <h2 className="font-display text-2xl font-bold">Reviews</h2>
           <div className="mt-6">
+            <RatingSummary avg={listing.rating_avg} count={listing.rating_count} />
+          </div>
+          <div className="mt-6">
             <ListingReviews listingId={listing.id} />
           </div>
         </section>
+
 
         {related.length > 0 && (
           <section className="mt-16">

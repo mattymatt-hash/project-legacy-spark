@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { StarRow } from "@/components/marketplace/StarRating";
 import { StoreReviews } from "@/components/marketplace/ReviewList";
+import { RatingSummary } from "@/components/marketplace/RatingSummary";
 import { StorePageSkeleton } from "@/components/marketplace/skeletons";
 
 const storeQuery = (handle: string) =>
@@ -127,7 +128,11 @@ function StorePage() {
 
         <section className="mt-16">
           <h2 className="font-display text-2xl font-bold">Reviews</h2>
+          <div className="mt-6">
+            <RatingSummary avg={store.rating_avg} count={store.rating_count} />
+          </div>
           <div className="mt-6"><StoreReviews handle={store.handle} /></div>
+
         </section>
       </main>
       <Footer />
