@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { StarRow } from "@/components/marketplace/StarRating";
 import { StoreReviews } from "@/components/marketplace/ReviewList";
+import { RatingSummary } from "@/components/marketplace/RatingSummary";
 import { StorePageSkeleton } from "@/components/marketplace/skeletons";
 
 const storeQuery = (handle: string) =>
