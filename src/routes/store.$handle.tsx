@@ -128,7 +128,11 @@ function StorePage() {
 
         <section className="mt-16">
           <h2 className="font-display text-2xl font-bold">Reviews</h2>
+          <div className="mt-6">
+            <RatingSummary avg={store.rating_avg} count={store.rating_count} />
+          </div>
           <div className="mt-6"><StoreReviews handle={store.handle} /></div>
+
         </section>
       </main>
       <Footer />
