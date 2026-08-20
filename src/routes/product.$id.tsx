@@ -100,7 +100,7 @@ function ProductPage() {
         <nav className="mb-6 text-sm text-muted-foreground">
           <Link to="/" className="hover:text-foreground">Home</Link>
           <span className="mx-2">/</span>
-          <Link to="/browse" search={{ category: listing.category }} className="capitalize hover:text-foreground">
+          <Link to="/browse" search={{ category: listing.category as CategorySlug }} className="capitalize hover:text-foreground">
             {listing.category}
           </Link>
           <span className="mx-2">/</span>
