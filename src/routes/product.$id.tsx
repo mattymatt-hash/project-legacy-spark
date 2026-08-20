@@ -14,6 +14,7 @@ import { useCart } from "@/lib/store/cart";
 import { useFavorites } from "@/lib/store/favorites";
 import { cn } from "@/lib/utils";
 import { formatPrice, CONDITION_LABELS } from "@/lib/format";
+import type { CategorySlug } from "@/lib/mock/types";
 import { toast } from "sonner";
 
 const listingQuery = (id: string) =>
