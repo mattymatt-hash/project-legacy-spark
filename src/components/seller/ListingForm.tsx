@@ -60,7 +60,7 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
   const [lengthIn, setLengthIn] = useState(String(initial?.length_in ?? 6));
   const [widthIn, setWidthIn] = useState(String(initial?.width_in ?? 4));
   const [heightIn, setHeightIn] = useState(String(initial?.height_in ?? 2));
-  const [category, setCategory] = useState(initial?.category ?? "handmade");
+  const [category, setCategory] = useState(initial?.category ?? CATEGORY_LIST[0].slug);
   const [condition, setCondition] = useState(initial?.condition ?? "new");
   const [status, setStatus] = useState(initial?.status ?? "active");
   const [imagesText, setImagesText] = useState((initial?.image_urls ?? []).join("\n"));
