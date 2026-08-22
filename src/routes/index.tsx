@@ -16,10 +16,10 @@ const homeListingsQuery = queryOptions({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "NoBS Market — Honest goods from real people" },
-      { name: "description", content: "Discover handmade, vintage, and indie goods from sellers who care. No dropshippers, no drama." },
-      { property: "og:title", content: "NoBS Market" },
-      { property: "og:description", content: "Honest goods from real people." },
+      { title: "NoBS Market — Real people. Real stuff. No nonsense." },
+      { name: "description", content: "Real people. Real stuff. No nonsense. A marketplace for handmade, vintage, and indie goods from sellers who actually make them." },
+      { property: "og:title", content: "NoBS Market — Real people. Real stuff. No nonsense." },
+      { property: "og:description", content: "Real people. Real stuff. No nonsense. Handmade, vintage, and indie goods from sellers who actually make them." },
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(homeListingsQuery),
