@@ -1,71 +1,30 @@
-import type { Category, Product, Review, Seller } from "./types";
+import type { Category } from "./types";
+
+const img = (id: string) => `https://images.unsplash.com/${id}?w=800&q=70`;
 
 export const categories: Category[] = [
-  { slug: "vintage", name: "Vintage", blurb: "Pre-loved gems with stories", image: "https://images.unsplash.com/photo-1503602642458-232111445657?w=800&q=70" },
-  { slug: "handmade", name: "Handmade", blurb: "Made by actual humans", image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&q=70" },
-  { slug: "home", name: "Home", blurb: "Objects that earn their shelf space", image: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=70" },
-  { slug: "fashion", name: "Fashion", blurb: "Wear something that isn't everywhere", image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=70" },
-  { slug: "art", name: "Art", blurb: "Walls deserve better", image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&q=70" },
-  { slug: "collectibles", name: "Collectibles", blurb: "The good kind of hoarding", image: "https://images.unsplash.com/photo-1606293459339-aa5d34a7b0e1?w=800&q=70" },
+  { slug: "antiques-collectibles", name: "Antiques & Collectibles", blurb: "The good kind of hoarding", image: img("photo-1606293459339-aa5d34a7b0e1") },
+  { slug: "arts-crafts", name: "Arts & Crafts", blurb: "Made by actual humans", image: img("photo-1513519245088-0e12902e5a38") },
+  { slug: "auto-parts", name: "Auto Parts", blurb: "Bolts, brakes, and bargains", image: img("photo-1486262715619-67b85e0b08d3") },
+  { slug: "baby", name: "Baby", blurb: "Tiny gear, big relief", image: img("photo-1522771930-78848d9293e8") },
+  { slug: "books-movies-music", name: "Books, Movies & Music", blurb: "Stories worth a second owner", image: img("photo-1512820790803-83ca734da794") },
+  { slug: "electronics", name: "Electronics", blurb: "Tested, working, honest", image: img("photo-1498049794561-7780e7231661") },
+  { slug: "furniture", name: "Furniture", blurb: "Things that earn their floor space", image: img("photo-1592078615290-033ee584e267") },
+  { slug: "health-beauty", name: "Health & Beauty", blurb: "Simple stuff that works", image: img("photo-1596462502278-27bfdc403348") },
+  { slug: "home-kitchen", name: "Home & Kitchen", blurb: "Objects that earn their shelf space", image: img("photo-1493663284031-b7e3aefcae8e") },
+  { slug: "home-improvement", name: "Home Improvement", blurb: "For the half-finished project", image: img("photo-1581092918056-0c4c3acd3789") },
+  { slug: "jewelry-watches", name: "Jewelry & Watches", blurb: "Small things, long memories", image: img("photo-1515562141207-7a88fb7ce338") },
+  { slug: "kidswear-baby", name: "Kidswear & Baby", blurb: "Outgrown, not worn out", image: img("photo-1519457431-44ccd64a579b") },
+  { slug: "luggage-bags", name: "Luggage & Bags", blurb: "Built to be dragged around", image: img("photo-1553062407-98eeb64c6a62") },
+  { slug: "menswear", name: "Menswear", blurb: "Wear something that isn't everywhere", image: img("photo-1490481651871-ab68de25d43d") },
+  { slug: "miscellaneous", name: "Miscellaneous", blurb: "Everything that defies a label", image: img("photo-1481349518771-20055b2a7b24") },
+  { slug: "musical-instruments", name: "Musical Instruments", blurb: "Plays better than it looks", image: img("photo-1511379938547-c1f69419868d") },
+  { slug: "patio-garden", name: "Patio & Garden", blurb: "For out back", image: img("photo-1416879595882-3373a0480b5b") },
+  { slug: "pet-supplies", name: "Pet Supplies", blurb: "Spoil them responsibly", image: img("photo-1548199973-03cce0bbc87b") },
+  { slug: "sporting-goods", name: "Sporting Goods", blurb: "Gear with mileage left", image: img("photo-1517649763962-0c623066013b") },
+  { slug: "toys-games", name: "Toys & Games", blurb: "All pieces included, promise", image: img("photo-1566576912321-d58ddd7a6088") },
+  { slug: "vehicles", name: "Vehicles", blurb: "Keys, titles, no games", image: img("photo-1494976388531-d1058494cdd8") },
+  { slug: "womenswear", name: "Womenswear", blurb: "Second-hand, first choice", image: img("photo-1483985988355-763728e1935b") },
 ];
 
-export const sellers: Seller[] = [
-  { id: "s1", handle: "atelier-noor", name: "Atelier Noor", location: "Lisbon, PT", avatar: "https://i.pravatar.cc/120?img=15", rating: 4.9, sales: 1248, joinedYear: 2019, bio: "Small ceramics studio. Wheel-thrown, wood-fired, shipped with care." },
-  { id: "s2", handle: "northbound-vintage", name: "Northbound Vintage", location: "Portland, OR", avatar: "https://i.pravatar.cc/120?img=33", rating: 4.8, sales: 642, joinedYear: 2021, bio: "Curated mid-century finds. If it survived 60 years it'll survive your apartment." },
-  { id: "s3", handle: "wren-and-rye", name: "Wren & Rye", location: "Brooklyn, NY", avatar: "https://i.pravatar.cc/120?img=47", rating: 5.0, sales: 312, joinedYear: 2022, bio: "Hand-printed textiles and the occasional poem." },
-  { id: "s4", handle: "studio-kobo", name: "Studio Kobo", location: "Kyoto, JP", avatar: "https://i.pravatar.cc/120?img=12", rating: 4.9, sales: 980, joinedYear: 2018, bio: "Minimal woodwork. Japanese joinery, no nails, no nonsense." },
-  { id: "s5", handle: "ember-press", name: "Ember Press", location: "Austin, TX", avatar: "https://i.pravatar.cc/120?img=68", rating: 4.7, sales: 421, joinedYear: 2020, bio: "Letterpress prints and risograph zines from a tiny garage studio." },
-  { id: "s6", handle: "fern-and-flint", name: "Fern & Flint", location: "Asheville, NC", avatar: "https://i.pravatar.cc/120?img=22", rating: 4.9, sales: 1567, joinedYear: 2017, bio: "Brass hardware, candles, and other heavy little things." },
-];
-
-const img = (id: string, w = 900) => `https://images.unsplash.com/${id}?w=${w}&q=70`;
-
-export const products: Product[] = [
-  { id: "p1", slug: "wheel-thrown-mug-clay", title: "Wheel-thrown stoneware mug", price: 38, currency: "USD", category: "handmade", condition: "New", images: [img("photo-1514228742587-6b1558fcca3d"), img("photo-1602050233811-43b9b50ec5fc")], description: "Hand-thrown stoneware mug glazed in a soft oat-milk matte. Holds 12oz. Microwave safe, dishwasher safe, looks better the more you use it.", sellerId: "s1", rating: 4.9, reviewCount: 124, shippingFrom: "Lisbon, PT", shippingPrice: 8, tags: ["ceramics", "kitchen", "gift"] },
-  { id: "p2", slug: "danish-teak-stool", title: "1960s Danish teak stool", price: 220, originalPrice: 280, currency: "USD", category: "vintage", condition: "Vintage", images: [img("photo-1592078615290-033ee584e267"), img("photo-1538688525198-9b88f6f53126")], description: "Solid teak three-legged stool, refinished by hand. Some honest wear on the seat. Built to outlive trends.", sellerId: "s2", rating: 4.8, reviewCount: 41, shippingFrom: "Portland, OR", shippingPrice: 25, tags: ["furniture", "mid-century"] },
-  { id: "p3", slug: "block-printed-tea-towel", title: "Block-printed linen tea towel", price: 24, currency: "USD", category: "handmade", condition: "New", images: [img("photo-1583845112203-29329902332e"), img("photo-1556228720-195a672e8a03")], description: "Hand-block-printed on 100% European linen. Pre-washed, gets softer with every cycle.", sellerId: "s3", rating: 5.0, reviewCount: 88, shippingFrom: "Brooklyn, NY", shippingPrice: 5, tags: ["kitchen", "textile"] },
-  { id: "p4", slug: "walnut-cutting-board", title: "End-grain walnut cutting board", price: 145, currency: "USD", category: "home", condition: "New", images: [img("photo-1593618998160-e34014e67546"), img("photo-1565538810643-b5bdb714032a")], description: "End-grain construction is easier on your knives and yours alone for the next 20 years. Finished with food-safe mineral oil.", sellerId: "s4", rating: 4.9, reviewCount: 56, shippingFrom: "Kyoto, JP", shippingPrice: 18, tags: ["kitchen", "wood"] },
-  { id: "p5", slug: "risograph-print-citrus", title: "Citrus risograph print, A3", price: 32, currency: "USD", category: "art", condition: "New", images: [img("photo-1513519245088-0e12902e5a38"), img("photo-1502082553048-f009c37129b9")], description: "Two-color risograph print on 120gsm uncoated. Signed and numbered, edition of 100.", sellerId: "s5", rating: 4.7, reviewCount: 33, shippingFrom: "Austin, TX", shippingPrice: 7, tags: ["print", "wall"] },
-  { id: "p6", slug: "brass-candle-snuffer", title: "Solid brass candle snuffer", price: 42, currency: "USD", category: "home", condition: "New", images: [img("photo-1602874801006-e26c2db52b09"), img("photo-1519710164239-da123dc03ef4")], description: "Heavy little brass tool that does one job extremely well. Develops a patina you'll grow to love.", sellerId: "s6", rating: 4.9, reviewCount: 211, shippingFrom: "Asheville, NC", shippingPrice: 6, tags: ["brass", "candles"] },
-  { id: "p7", slug: "vintage-levis-501", title: "Vintage Levi's 501, 32x32", price: 88, currency: "USD", category: "fashion", condition: "Good", images: [img("photo-1542272604-787c3835535d"), img("photo-1582552938357-32b906df40cb")], description: "Honest fade, no holes, original red tab. Measured flat to be sure.", sellerId: "s2", rating: 4.8, reviewCount: 19, shippingFrom: "Portland, OR", shippingPrice: 10, tags: ["denim", "vintage"] },
-  { id: "p8", slug: "ceramic-vase-bud", title: "Stoneware bud vase, set of 2", price: 54, currency: "USD", category: "handmade", condition: "New", images: [img("photo-1578749556568-bc2c40e68b61"), img("photo-1493663284031-b7e3aefcae8e")], description: "Two little bud vases, each thrown slightly differently because that's how hands work.", sellerId: "s1", rating: 4.9, reviewCount: 67, shippingFrom: "Lisbon, PT", shippingPrice: 8, tags: ["ceramics"] },
-  { id: "p9", slug: "letterpress-card-set", title: "Letterpress card set (6)", price: 28, currency: "USD", category: "art", condition: "New", images: [img("photo-1582921017921-2f24b1f3fc66"), img("photo-1531346878377-a5be20888e57")], description: "Six blank letterpress cards on cotton paper. Envelopes included. Pairs well with bad handwriting.", sellerId: "s5", rating: 4.8, reviewCount: 52, shippingFrom: "Austin, TX", shippingPrice: 5, tags: ["paper", "gift"] },
-  { id: "p10", slug: "wool-throw-blanket", title: "Heavyweight wool throw", price: 168, currency: "USD", category: "home", condition: "New", images: [img("photo-1580301762395-21ce84d00bc6"), img("photo-1522771739844-6a9f6d5f14af")], description: "Charcoal wool throw woven on a vintage shuttle loom. Hefty, warm, slightly itchy in the best way.", sellerId: "s3", rating: 4.9, reviewCount: 74, shippingFrom: "Brooklyn, NY", shippingPrice: 12, tags: ["textile", "winter"] },
-  { id: "p11", slug: "antique-brass-key", title: "Antique brass skeleton key", price: 18, currency: "USD", category: "collectibles", condition: "Vintage", images: [img("photo-1606293459339-aa5d34a7b0e1"), img("photo-1519710164239-da123dc03ef4")], description: "Late 1800s skeleton key. Doesn't open anything you own but looks great trying.", sellerId: "s6", rating: 4.7, reviewCount: 28, shippingFrom: "Asheville, NC", shippingPrice: 4, tags: ["brass", "antique"] },
-  { id: "p12", slug: "abstract-oil-painting", title: "Untitled, oil on linen 12x16", price: 340, currency: "USD", category: "art", condition: "New", images: [img("photo-1549887534-1541e9326642"), img("photo-1502082553048-f009c37129b9")], description: "Original oil on stretched linen. Soft ochre and dusty teal. Comes wired and ready to hang.", sellerId: "s5", rating: 5.0, reviewCount: 8, shippingFrom: "Austin, TX", shippingPrice: 22, tags: ["original", "painting"] },
-  { id: "p13", slug: "wool-overcoat-camel", title: "Vintage camel wool overcoat M", price: 195, originalPrice: 240, currency: "USD", category: "fashion", condition: "Like new", images: [img("photo-1539109136881-3be0616acf4b"), img("photo-1591047139829-d91aecb6caea")], description: "Single-breasted camel wool coat in near-perfect condition. Tagged M, fits modern M-L.", sellerId: "s2", rating: 4.8, reviewCount: 14, shippingFrom: "Portland, OR", shippingPrice: 18, tags: ["outerwear", "vintage"] },
-  { id: "p14", slug: "marble-incense-holder", title: "Carrara marble incense holder", price: 36, currency: "USD", category: "home", condition: "New", images: [img("photo-1602874801006-e26c2db52b09"), img("photo-1493663284031-b7e3aefcae8e")], description: "Cut from a single offcut of Carrara marble. No two are quite the same.", sellerId: "s4", rating: 4.9, reviewCount: 42, shippingFrom: "Kyoto, JP", shippingPrice: 9, tags: ["marble"] },
-  { id: "p15", slug: "linen-apron-natural", title: "Cross-back linen apron", price: 72, currency: "USD", category: "handmade", condition: "New", images: [img("photo-1556228720-195a672e8a03"), img("photo-1583845112203-29329902332e")], description: "Heavy natural linen, deep pockets, no ties to fuss with. Made one at a time.", sellerId: "s3", rating: 5.0, reviewCount: 96, shippingFrom: "Brooklyn, NY", shippingPrice: 10, tags: ["kitchen", "linen"] },
-  { id: "p16", slug: "vintage-camera-yashica", title: "Yashica Electro 35 rangefinder", price: 165, currency: "USD", category: "collectibles", condition: "Good", images: [img("photo-1502920917128-1aa500764cbd"), img("photo-1606986628253-21620d6c8a93")], description: "Tested, working, light seals replaced. Includes original leather case.", sellerId: "s2", rating: 4.8, reviewCount: 22, shippingFrom: "Portland, OR", shippingPrice: 14, tags: ["camera", "film"] },
-  { id: "p17", slug: "oak-spice-rack", title: "Wall-mounted oak spice rack", price: 124, currency: "USD", category: "home", condition: "New", images: [img("photo-1556909114-f6e7ad7d3136"), img("photo-1493663284031-b7e3aefcae8e")], description: "Hand-cut white oak, mortise & tenon. Holds 12 standard spice jars (not included, sorry).", sellerId: "s4", rating: 4.9, reviewCount: 36, shippingFrom: "Kyoto, JP", shippingPrice: 16, tags: ["wood", "kitchen"] },
-  { id: "p18", slug: "silk-scarf-handpainted", title: "Hand-painted silk scarf", price: 88, currency: "USD", category: "fashion", condition: "New", images: [img("photo-1601924994987-69e26d50dc26"), img("photo-1490481651871-ab68de25d43d")], description: "100% silk twill, hand-painted one at a time. Each piece is one of one.", sellerId: "s3", rating: 4.9, reviewCount: 31, shippingFrom: "Brooklyn, NY", shippingPrice: 6, tags: ["silk", "wearable-art"] },
-  { id: "p19", slug: "ceramic-planter-large", title: "Large hand-built planter", price: 96, currency: "USD", category: "handmade", condition: "New", images: [img("photo-1485955900006-10f4d324d411"), img("photo-1602050233811-43b9b50ec5fc")], description: "Big enough for a fiddle leaf you'll inevitably overwater. Drainage hole included.", sellerId: "s1", rating: 4.8, reviewCount: 45, shippingFrom: "Lisbon, PT", shippingPrice: 22, tags: ["plants", "ceramics"] },
-  { id: "p20", slug: "vintage-vinyl-jazz", title: "Bill Evans Trio LP, 1961 press", price: 58, currency: "USD", category: "collectibles", condition: "Good", images: [img("photo-1483412033650-1015ddeb83d1"), img("photo-1452860606245-08befc0ff44b")], description: "Original mono pressing. Vinyl: VG+, sleeve: VG. Plays beautifully.", sellerId: "s2", rating: 4.9, reviewCount: 17, shippingFrom: "Portland, OR", shippingPrice: 8, tags: ["vinyl", "jazz"] },
-  { id: "p21", slug: "soy-candle-tobacco", title: "Tobacco & oak soy candle", price: 34, currency: "USD", category: "home", condition: "New", images: [img("photo-1602874801006-e26c2db52b09"), img("photo-1519710164239-da123dc03ef4")], description: "Hand-poured soy wax with cotton wick. 60+ hour burn. Smells like a library that drinks.", sellerId: "s6", rating: 4.9, reviewCount: 188, shippingFrom: "Asheville, NC", shippingPrice: 6, tags: ["candles"] },
-  { id: "p22", slug: "screenprint-poster-mountains", title: "Mountains screenprint, 18x24", price: 45, currency: "USD", category: "art", condition: "New", images: [img("photo-1531346878377-a5be20888e57"), img("photo-1502082553048-f009c37129b9")], description: "Three-color hand-pulled screenprint on heavy stock. Signed edition of 50.", sellerId: "s5", rating: 4.8, reviewCount: 24, shippingFrom: "Austin, TX", shippingPrice: 9, tags: ["print", "wall"] },
-  { id: "p23", slug: "leather-belt-tan", title: "Hand-stitched leather belt", price: 78, currency: "USD", category: "fashion", condition: "New", images: [img("photo-1624222247344-550fb60583dc"), img("photo-1591047139829-d91aecb6caea")], description: "Single piece of vegetable-tanned leather, hand-stitched, solid brass buckle. Will outlive your jeans.", sellerId: "s6", rating: 5.0, reviewCount: 64, shippingFrom: "Asheville, NC", shippingPrice: 7, tags: ["leather"] },
-  { id: "p24", slug: "vintage-globe-1970", title: "1970s desktop globe", price: 112, currency: "USD", category: "vintage", condition: "Vintage", images: [img("photo-1606293459339-aa5d34a7b0e1"), img("photo-1538688525198-9b88f6f53126")], description: "A globe with countries that no longer exist. Educational and conversational.", sellerId: "s2", rating: 4.7, reviewCount: 13, shippingFrom: "Portland, OR", shippingPrice: 16, tags: ["vintage", "desk"] },
-];
-
-export const reviews: Record<string, Review[]> = {
-  p1: [
-    { id: "r1", author: "Sam K.", rating: 5, date: "2026-04-12", text: "Perfect weight, perfect glaze. My only mug now." },
-    { id: "r2", author: "Priya R.", rating: 5, date: "2026-03-02", text: "Beautifully packaged. Coffee tastes the same but I feel fancier." },
-  ],
-  p2: [
-    { id: "r3", author: "Alex M.", rating: 5, date: "2026-05-21", text: "Solid, gorgeous, exactly as described." },
-  ],
-};
-
-export function getProduct(id: string): Product | undefined {
-  return products.find((p) => p.id === id);
-}
-export function getSeller(id: string): Seller | undefined {
-  return sellers.find((s) => s.id === id);
-}
-export function getCategory(slug: string): Category | undefined {
-  return categories.find((c) => c.slug === slug);
-}
-export function getReviews(productId: string): Review[] {
-  return reviews[productId] ?? [];
-}
+export const CATEGORY_SLUGS = categories.map((c) => c.slug) as [string, ...string[]];

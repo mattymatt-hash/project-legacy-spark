@@ -2,7 +2,9 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const CATEGORY_VALUES = ["vintage", "handmade", "home", "fashion", "art", "collectibles"] as const;
+import { CATEGORY_SLUGS } from "@/lib/mock/data";
+
+const CATEGORY_VALUES = CATEGORY_SLUGS;
 const CONDITION_VALUES = ["new", "like_new", "good", "vintage"] as const;
 const STATUS_VALUES = ["draft", "active", "sold", "archived"] as const;
 

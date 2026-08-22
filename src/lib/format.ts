@@ -17,14 +17,11 @@ export function centsToDollarString(cents: number | null | undefined): string {
   return (cents / 100).toFixed(2);
 }
 
-export const CATEGORY_LABELS: Record<string, string> = {
-  vintage: "Vintage",
-  handmade: "Handmade",
-  home: "Home",
-  fashion: "Fashion",
-  art: "Art",
-  collectibles: "Collectibles",
-};
+import { categories } from "@/lib/mock/data";
+
+export const CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
+  categories.map((c) => [c.slug, c.name]),
+);
 
 export const CONDITION_LABELS: Record<string, string> = {
   new: "New",

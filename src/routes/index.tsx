@@ -115,8 +115,8 @@ function Index() {
 
       {/* Categories */}
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-        <SectionHeader title="Shop by category" subtitle="Six honest aisles." />
-        <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+        <SectionHeader title="Shop by category" subtitle="Twenty-two honest aisles." />
+        <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {categories.map((c) => <CategoryTile key={c.slug} category={c} />)}
         </div>
       </section>

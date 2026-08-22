@@ -12,7 +12,9 @@ import { createListing, updateListing, deleteListing } from "@/lib/listings.func
 import { dollarsToCents, centsToDollarString } from "@/lib/format";
 import { supabase } from "@/integrations/supabase/client";
 
-const CATEGORIES = ["vintage", "handmade", "home", "fashion", "art", "collectibles"] as const;
+import { categories as CATEGORY_LIST } from "@/lib/mock/data";
+
+const CATEGORIES = CATEGORY_LIST;
 const CONDITIONS = [
   { v: "new", l: "New" },
   { v: "like_new", l: "Like new" },
@@ -58,7 +60,7 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
   const [lengthIn, setLengthIn] = useState(String(initial?.length_in ?? 6));
   const [widthIn, setWidthIn] = useState(String(initial?.width_in ?? 4));
   const [heightIn, setHeightIn] = useState(String(initial?.height_in ?? 2));
-  const [category, setCategory] = useState(initial?.category ?? "handmade");
+  const [category, setCategory] = useState(initial?.category ?? CATEGORY_LIST[0].slug);
   const [condition, setCondition] = useState(initial?.condition ?? "new");
   const [status, setStatus] = useState(initial?.status ?? "active");
   const [imagesText, setImagesText] = useState((initial?.image_urls ?? []).join("\n"));
@@ -208,8 +210,8 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
             onChange={(e) => setCategory(e.target.value)}
           >
             {CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
+              <option key={c.slug} value={c.slug}>
+                {c.name}
               </option>
             ))}
           </select>
