@@ -9,7 +9,7 @@ import { getActiveListings } from "@/lib/listings.functions";
 import { categories } from "@/lib/mock/data";
 
 const searchSchema = z.object({
-  category: z.enum(["vintage", "handmade", "home", "fashion", "art", "collectibles"]).optional(),
+  category: z.string().optional(),
   q: z.string().optional(),
 });
 

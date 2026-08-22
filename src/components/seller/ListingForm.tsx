@@ -12,7 +12,9 @@ import { createListing, updateListing, deleteListing } from "@/lib/listings.func
 import { dollarsToCents, centsToDollarString } from "@/lib/format";
 import { supabase } from "@/integrations/supabase/client";
 
-const CATEGORIES = ["vintage", "handmade", "home", "fashion", "art", "collectibles"] as const;
+import { categories as CATEGORY_LIST } from "@/lib/mock/data";
+
+const CATEGORIES = CATEGORY_LIST;
 const CONDITIONS = [
   { v: "new", l: "New" },
   { v: "like_new", l: "Like new" },
