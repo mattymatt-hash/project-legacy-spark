@@ -83,7 +83,7 @@ function Index() {
               A marketplace<br />without the <span style={{ color: "var(--color-primary)" }}>BS</span>.
             </h1>
             <p className="mt-5 max-w-md text-base text-muted-foreground sm:text-lg">
-              Handmade, vintage, and indie goods from people who actually make them. No dropshippers. No fake reviews. No 47-step checkout.
+              Real people. Real stuff. No nonsense.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link to="/browse" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90">
