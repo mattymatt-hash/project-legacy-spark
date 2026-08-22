@@ -210,8 +210,8 @@ export function ListingForm({ initial, mode }: { initial?: ListingFormInitial; m
             onChange={(e) => setCategory(e.target.value)}
           >
             {CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
+              <option key={c.slug} value={c.slug}>
+                {c.name}
               </option>
             ))}
           </select>
